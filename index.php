@@ -203,18 +203,18 @@ $grades = fetch_grades($mysqli);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 38px;
-    width: 38px;
+    height: 36px;
+    width: 36px;
     border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.35);
-    background: transparent;
-    color: #fff;
+    border: 1px solid rgba(15,23,42,0.12);
+    background: #f8fafc;
+    color: #0f172a;
     transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
-.theme-toggle .bi { font-size: 1.1rem; }
+.theme-toggle .bi { font-size: 1.05rem; }
 .theme-toggle:hover, .theme-toggle:focus {
-    background: rgba(255,255,255,0.12);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    background: rgba(15,23,42,0.04);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
 }
 .dark-mode .theme-toggle {
     border-color: rgba(255,255,255,0.18);
@@ -227,22 +227,6 @@ $grades = fetch_grades($mysqli);
 
 /* Smooth theme transitions */
 :root { --theme-transition-speed: 240ms; }
-.theme-fab {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    z-index: 1040;
-    border: 1px solid rgba(0,0,0,0.08);
-    background: rgba(255,255,255,0.65);
-    backdrop-filter: saturate(180%) blur(8px);
-    -webkit-backdrop-filter: saturate(180%) blur(8px);
-    color: #0f172a;
-}
-.dark-mode .theme-fab {
-    background: rgba(17,24,39,0.6);
-    border-color: rgba(255,255,255,0.18);
-    color: #e5e7eb;
-}
 .theme-transition, .theme-transition * {
     transition: background-color var(--theme-transition-speed) ease,
                 color var(--theme-transition-speed) ease,
@@ -262,12 +246,81 @@ $grades = fetch_grades($mysqli);
 </style>
 </head>
 <body>
-<!-- Floating dark-mode toggle (navbar removed) -->
-<div class="theme-fab-wrap">
-  <button id="darkModeToggle" class="btn theme-toggle theme-fab" aria-label="Toggle dark mode">
-    <span id="darkModeIcon" class="bi bi-sun"></span>
-  </button>
-  
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="form-section">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h2 class="mb-0">Add/Update Grade</h2>
+                    <button id="darkModeToggle" class="btn theme-toggle" aria-label="Toggle dark mode">
+                        <span id="darkModeIcon" class="bi bi-sun"></span>
+                    </button>
+                </div>
+                <form action="update_grade.php" method="post" class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Student</label>
+                        <select name="student_id" class="form-select" required>
+                            <option value="">Select...</option>
+                            <?php foreach (
+                                $students as $s): ?>
+                                <option value="<?= $s['id'] ?>"><?= htmlspecialchars($s['name']) ?> (<?= htmlspecialchars($s['student_number']) ?>)</option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Subject</label>
+                        <select name="subject_id" class="form-select" required>
+                            <option value="">Select...</option>
+                            <?php foreach ($subjects as $sub): ?>
+                                <option value="<?= $sub['id'] ?>"><?= htmlspecialchars($sub['subject_code']) ?> - <?= htmlspecialchars($sub['subject_title']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Grade</label>
+                        <input type="number" name="grade" class="form-control" required min="0" max="5" step="0.01">
+                    </div>
+                    <div class="col-md-2 align-self-end">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Student #</th>
+                                    <th>Subject Code</th>
+                                    <th>Subject Title</th>
+                                    <th>Grade</th>
+                                    <th>Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($grades as $g): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($g['name']) ?></td>
+                                    <td><?= htmlspecialchars($g['student_number']) ?></td>
+                                    <td><?= htmlspecialchars($g['subject_code']) ?></td>
+                                    <td><?= htmlspecialchars($g['subject_title']) ?></td>
+                                    <td><?= htmlspecialchars($g['grade']) ?></td>
+                                    <td><?= htmlspecialchars($g['last_updated']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
   // Dark mode toggle logic with system preference + icon animation
