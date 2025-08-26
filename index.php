@@ -249,7 +249,7 @@ $grades = fetch_grades($mysqli);
 <nav class="navbar navbar-expand-lg mb-4">
   <div class="container d-flex align-items-center justify-content-between">
     <a class="navbar-brand fw-bold" href="#">CTU-CC GRADES NOTIFIER</a>
-    <button id="darkModeToggle" class="btn theme-toggle ms-2" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <button id="darkModeToggle" class="btn theme-toggle ms-2" aria-label="Toggle dark mode">
       <span id="darkModeIcon" class="bi bi-sun"></span>
     </button>
   </div>
