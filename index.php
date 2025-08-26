@@ -227,6 +227,22 @@ $grades = fetch_grades($mysqli);
 
 /* Smooth theme transitions */
 :root { --theme-transition-speed: 240ms; }
+.theme-fab {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1040;
+    border: 1px solid rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: saturate(180%) blur(8px);
+    -webkit-backdrop-filter: saturate(180%) blur(8px);
+    color: #0f172a;
+}
+.dark-mode .theme-fab {
+    background: rgba(17,24,39,0.6);
+    border-color: rgba(255,255,255,0.18);
+    color: #e5e7eb;
+}
 .theme-transition, .theme-transition * {
     transition: background-color var(--theme-transition-speed) ease,
                 color var(--theme-transition-speed) ease,
@@ -246,14 +262,13 @@ $grades = fetch_grades($mysqli);
 </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg mb-4">
-  <div class="container d-flex align-items-center justify-content-between">
-    <a class="navbar-brand fw-bold" href="#">CTU-CC GRADES NOTIFIER</a>
-    <button id="darkModeToggle" class="btn theme-toggle ms-2" aria-label="Toggle dark mode">
-      <span id="darkModeIcon" class="bi bi-sun"></span>
-    </button>
-  </div>
-</nav>
+<!-- Floating dark-mode toggle (navbar removed) -->
+<div class="theme-fab-wrap">
+  <button id="darkModeToggle" class="btn theme-toggle theme-fab" aria-label="Toggle dark mode">
+    <span id="darkModeIcon" class="bi bi-sun"></span>
+  </button>
+  
+</div>
 <script>
   // Dark mode toggle logic with system preference + icon animation
   function setDarkMode(on, persist = true) {
@@ -347,8 +362,6 @@ $grades = fetch_grades($mysqli);
     <div class="row mb-4">
         <div class="col-12">
             <div class="card">
-                <div class="card-header bg-primary text-white">
-                </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
