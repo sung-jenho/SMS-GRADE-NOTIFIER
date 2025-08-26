@@ -38,6 +38,7 @@ $grades = fetch_grades($mysqli);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         body {
             font-family: 'Inter', Arial, sans-serif;
@@ -198,31 +199,112 @@ $grades = fetch_grades($mysqli);
     background: #181e29 !important;
     color: #e5e7eb;
 }
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    width: 38px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: transparent;
+    color: #fff;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.theme-toggle .bi { font-size: 1.1rem; }
+.theme-toggle:hover, .theme-toggle:focus {
+    background: rgba(255,255,255,0.12);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+.dark-mode .theme-toggle {
+    border-color: rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.03);
+    color: #e5e7eb;
+}
+.dark-mode .theme-toggle:hover, .dark-mode .theme-toggle:focus {
+    background: rgba(255,255,255,0.08);
+}
+
+/* Smooth theme transitions */
+:root { --theme-transition-speed: 240ms; }
+.theme-transition, .theme-transition * {
+    transition: background-color var(--theme-transition-speed) ease,
+                color var(--theme-transition-speed) ease,
+                border-color var(--theme-transition-speed) ease,
+                box-shadow var(--theme-transition-speed) ease;
+}
+/* Icon animation and image fade */
+.theme-toggle .bi {
+    transition: transform var(--theme-transition-speed) ease, opacity var(--theme-transition-speed) ease;
+}
+.theme-toggle.spin .bi { transform: rotate(180deg); }
+.icon-fade { opacity: 0; }
+.theme-transition img, .theme-transition .navbar-brand img {
+    transition: opacity var(--theme-transition-speed) ease, filter var(--theme-transition-speed) ease;
+}
+.dark-mode img { filter: brightness(0.9) contrast(1.05); }
 </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg mb-4">
   <div class="container d-flex align-items-center justify-content-between">
     <a class="navbar-brand fw-bold" href="#">CTU-CC GRADES NOTIFIER</a>
-    <button id="darkModeToggle" class="btn btn-outline-light ms-2" style="min-width:40px;" title="Toggle dark mode">
+    <button id="darkModeToggle" class="btn theme-toggle ms-2" aria-label="Toggle dark mode" title="Toggle dark mode">
       <span id="darkModeIcon" class="bi bi-sun"></span>
     </button>
   </div>
 </nav>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
 <script>
-  // Dark mode toggle logic
-  function setDarkMode(on) {
+  // Dark mode toggle logic with system preference + icon animation
+  function setDarkMode(on, persist = true) {
     document.body.classList.toggle('dark-mode', on);
-    document.getElementById('darkModeIcon').className = on ? 'bi bi-moon' : 'bi bi-sun';
-    localStorage.setItem('darkMode', on ? '1' : '0');
+    if (persist) localStorage.setItem('darkMode', on ? '1' : '0');
   }
+
+  function updateIconClass(on) {
+    const icon = document.getElementById('darkModeIcon');
+    icon.className = on ? 'bi bi-moon' : 'bi bi-sun';
+  }
+
+  function animateIconSwap(on) {
+    const btn = document.getElementById('darkModeToggle');
+    const icon = document.getElementById('darkModeIcon');
+    btn.classList.add('spin');
+    icon.classList.add('icon-fade');
+    setTimeout(function() { // halfway through fade, swap glyph
+      updateIconClass(on);
+      icon.classList.remove('icon-fade');
+      setTimeout(function(){ btn.classList.remove('spin'); }, 180);
+    }, 120);
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     const darkModeBtn = document.getElementById('darkModeToggle');
-    const isDark = localStorage.getItem('darkMode') === '1';
-    setDarkMode(isDark);
+    const stored = localStorage.getItem('darkMode');
+    const media = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+    let isDark = stored === '1' ? true : stored === '0' ? false : (media ? media.matches : false);
+
+    // Apply theme and set correct icon without animation on first load
+    setDarkMode(isDark, false);
+    updateIconClass(isDark);
+
+    // If user hasn't chosen a preference, follow system changes
+    if (stored === null && media && media.addEventListener) {
+      media.addEventListener('change', function(e) {
+        document.body.classList.add('theme-transition');
+        setDarkMode(e.matches, false);
+        animateIconSwap(e.matches);
+        setTimeout(function(){ document.body.classList.remove('theme-transition'); }, 260);
+      });
+    }
+
     darkModeBtn.onclick = function() {
-      setDarkMode(!document.body.classList.contains('dark-mode'));
+      // Animate theme change only on toggle
+      document.body.classList.add('theme-transition');
+      const next = !document.body.classList.contains('dark-mode');
+      setDarkMode(next, true);
+      animateIconSwap(next);
+      setTimeout(function(){ document.body.classList.remove('theme-transition'); }, 260);
     };
   });
 </script>
