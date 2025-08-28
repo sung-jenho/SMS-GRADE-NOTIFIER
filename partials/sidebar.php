@@ -1,0 +1,41 @@
+<?php /** Off-canvas sidebar navigation */ ?>
+<div class="offcanvas offcanvas-start custom-offcanvas" tabindex="-1" id="mainSidebar" aria-labelledby="mainSidebarLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="mainSidebarLabel">SMS Grade System</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <nav class="sidebar-nav" aria-label="Primary">
+      <a class="sidebar-link<?php if($section=='overview') echo ' active'; ?>" href="?section=overview">
+        <i class="bi bi-grid-3x3-gap"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="sidebar-link<?php if($section=='students') echo ' active'; ?>" href="?section=students">
+        <i class="bi bi-people"></i>
+        <span>Students</span>
+      </a>
+      <a class="sidebar-link<?php if($section=='grades') echo ' active'; ?>" href="?section=grades">
+        <i class="bi bi-mortarboard"></i>
+        <span>Grades</span>
+      </a>
+      <a class="sidebar-link<?php if($section=='notifications') echo ' active'; ?>" href="?section=notifications">
+        <i class="bi bi-chat-dots"></i>
+        <span>SMS Logs</span>
+      </a>
+      <a class="sidebar-link<?php if($section=='settings') echo ' active'; ?>" href="?section=settings">
+        <i class="bi bi-gear"></i>
+        <span>Settings</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <span class="avatar-circle">A</span>
+        <div class="user-meta">
+          <div class="user-name">Admin User</div>
+          <div class="user-email">admin@school.edu</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

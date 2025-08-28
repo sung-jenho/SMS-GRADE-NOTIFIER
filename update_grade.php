@@ -1,20 +1,22 @@
 <?php
 // update_grade.php - Handles grade updates and sends SMS notification via Telesign
+require_once __DIR__ . '/includes/db.php';
 
-// CONFIG: Update these with your actual Telesign credentials
-define('TELESIGN_CUSTOMER_ID', 'YOUR_CUSTOMER_ID');
-define('TELESIGN_API_KEY', 'YOUR_API_KEY');
+// CONFIG: Use environment variables for Telesign
+define('TELESIGN_CUSTOMER_ID', getenv('TELESIGN_CUSTOMER_ID') ?: '');
+define('TELESIGN_API_KEY', getenv('TELESIGN_API_KEY') ?: '');
 define('TELESIGN_SMS_URL', 'https://rest-api.telesign.com/v1/messaging');
 
-$mysqli = new mysqli("localhost", "root", "", "sms_grades");
-if ($mysqli->connect_errno) {
-    die("Failed to connect to MySQL: " . $mysqli->connect_error);
-}
+$mysqli = get_db_connection();
 
-// Get POST data
-$student_id = $_POST['student_id'];
-$subject_id = $_POST['subject_id'];
-$grade = $_POST['grade'];
+// Get and validate POST data
+$student_id = filter_input(INPUT_POST, 'student_id', FILTER_VALIDATE_INT);
+$subject_id = filter_input(INPUT_POST, 'subject_id', FILTER_VALIDATE_INT);
+$grade = filter_input(INPUT_POST, 'grade', FILTER_VALIDATE_FLOAT);
+if ($student_id === false || $subject_id === false || $grade === false || $grade < 0 || $grade > 5) {
+    http_response_code(400);
+    exit('Invalid input');
+}
 
 // Check if grade exists for this student+subject
 $stmt = $mysqli->prepare("SELECT id FROM grades WHERE student_id=? AND subject_id=?");
@@ -36,9 +38,18 @@ if ($stmt->num_rows > 0) {
 }
 $stmt->close();
 
-// Fetch student and subject info
-$student = $mysqli->query("SELECT name, phone_number FROM students WHERE id = $student_id")->fetch_assoc();
-$subject = $mysqli->query("SELECT subject_code, subject_title FROM subjects WHERE id = $subject_id")->fetch_assoc();
+// Fetch student and subject info securely
+$stmt = $mysqli->prepare('SELECT name, phone_number FROM students WHERE id = ?');
+$stmt->bind_param('i', $student_id);
+$stmt->execute();
+$student = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+$stmt = $mysqli->prepare('SELECT subject_code, subject_title FROM subjects WHERE id = ?');
+$stmt->bind_param('i', $subject_id);
+$stmt->execute();
+$subject = $stmt->get_result()->fetch_assoc();
+$stmt->close();
 
 // Compose SMS
 $sms_message = "Hello {$student['name']}, your grade for {$subject['subject_code']} ({$subject['subject_title']}) is now: $grade.";
@@ -49,6 +60,7 @@ function send_sms_telesign($phone, $message) {
     $customer_id = TELESIGN_CUSTOMER_ID;
     $api_key = TELESIGN_API_KEY;
     $url = TELESIGN_SMS_URL . "/sms";
+    if (!$customer_id || !$api_key) { return false; }
 
     $data = array(
         'phone_number' => $phone,
