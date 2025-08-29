@@ -28,10 +28,21 @@
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <span class="avatar-circle"><?= substr($_SESSION['full_name'] ?? 'A', 0, 1) ?></span>
+        <?php
+          $png = __DIR__ . '/../assets/sir-greg.png';
+          $jpg = __DIR__ . '/../assets/sir-greg.jpg';
+          if (file_exists($png)) {
+            $sidebarAvatar = 'assets/sir-greg.png';
+          } elseif (file_exists($jpg)) {
+            $sidebarAvatar = 'assets/sir-greg.jpg';
+          } else {
+            $sidebarAvatar = 'assets/ctu-logo.png';
+          }
+        ?>
+        <img src="<?= $sidebarAvatar ?>" alt="Profile" class="sidebar-avatar-img" />
         <div class="user-meta">
-          <div class="user-name"><?= htmlspecialchars($_SESSION['full_name'] ?? 'Admin') ?></div>
-          <div class="user-email"><?= htmlspecialchars($_SESSION['email'] ?? 'admin@ctu.edu.ph') ?></div>
+          <div class="user-name"><?= htmlspecialchars($_SESSION['full_name'] ?? 'Administrator') ?></div>
+          <div class="user-email">Prof. Greg Vestil</div>
         </div>
       </div>
     </div>

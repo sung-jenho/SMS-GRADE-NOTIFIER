@@ -5,11 +5,7 @@ function setDarkMode(on, persist = true) {
   if (persist) localStorage.setItem('darkMode', on ? '1' : '0');
 }
 
-function updateIconClass(on) {
-  // Backward compatibility: if an old icon exists, update it.
-  const icon = document.getElementById('darkModeIcon');
-  if (icon) icon.className = on ? 'bi bi-moon' : 'bi bi-sun';
-}
+function updateIconClass(on) {}
 
 document.addEventListener('DOMContentLoaded', function () {
   const darkModeInput = document.getElementById('darkModeToggle');

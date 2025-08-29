@@ -7,10 +7,9 @@
     <div class="header-logo"><img src="assets/ctu-logo.png" alt="CTU Logo" class="header-logo-img"></div>
     <div class="header-title-group">
       <div class="header-title-row">
-        <div class="header-title">SMS Grade Notifier</div>
-        <span class="status-badge">System Active</span>
+        <div class="header-title">HIBALAN</div>
       </div>
-      <div class="header-subtitle">For college students in CTU-Consolacion.</div>
+      
     </div>
   </div>
   <div class="header-actions">
@@ -20,15 +19,26 @@
       <span class="switch-handle"></span>
       <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
     </label>
-    
-    <div class="user-menu">
-      <div class="user-info">
-        <span class="user-avatar"><?= substr($_SESSION['full_name'] ?? 'A', 0, 1) ?></span>
-        <span class="user-name"><?= htmlspecialchars($_SESSION['full_name'] ?? 'Admin') ?></span>
-      </div>
-      <a href="logout.php" class="logout-btn" title="Logout">
-        <i class="bi bi-box-arrow-right"></i>
-      </a>
+
+    <?php
+      $png = __DIR__ . '/../assets/sir-greg.jpg';
+      $jpg = __DIR__ . '/../assets/sir-greg.jpg';
+      if (file_exists($png)) {
+        $avatarPath = 'assets/sir-greg.jpg';
+      } elseif (file_exists($jpg)) {
+        $avatarPath = 'assets/sir-greg.jpg';
+      } else {
+        $avatarPath = 'assets/ctu-logo.png';
+      }
+    ?>
+    <div class="user-menu dropdown">
+      <button class="avatar-dropdown user-avatar-btn" type="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">
+        <img src="<?= $avatarPath ?>" alt="Admin Avatar" class="user-avatar-img" />
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end user-menu-dropdown" aria-labelledby="userMenuDropdown">
+        <li><h6 class="dropdown-header">Account</h6></li>
+        <li><a class="dropdown-item" href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+      </ul>
     </div>
   </div>
 </header>

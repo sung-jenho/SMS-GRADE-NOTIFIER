@@ -11,7 +11,7 @@ $error_message = '';
 
 // Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    require_once __DIR__ . '/includes/db.php';
+    require_once __DIR__ . '/includes/queries.php';
     
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -19,23 +19,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($username) || empty($password)) {
         $error_message = 'Please enter both username and password.';
     } else {
-        $mysqli = get_db_connection();
-        
-        // For demo purposes, using a simple admin account
-        // In production, you should hash passwords and use proper authentication
+        // Try database-backed authentication first
+        $user = find_user_by_username($username);
+        if ($user && isset($user['password_hash']) && password_verify($password, $user['password_hash'])) {
+            $_SESSION['user_id'] = (int)$user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['full_name'] = $user['full_name'] ?? $user['username'];
+            $_SESSION['email'] = $user['email'] ?? '';
+            $_SESSION['last_activity'] = time();
+
+            header('Location: index.php');
+            exit();
+        }
+
+        // Fallback legacy hardcoded admin (optional)
         if ($username === 'admin' && $password === 'admin123') {
             $_SESSION['user_id'] = 1;
             $_SESSION['username'] = 'admin';
             $_SESSION['full_name'] = 'Administrator';
             $_SESSION['email'] = 'admin@ctu.edu.ph';
-            
+            $_SESSION['last_activity'] = time();
+
             header('Location: index.php');
             exit();
-        } else {
-            $error_message = 'Invalid username or password.';
         }
-        
-        $mysqli->close();
+
+        $error_message = 'Invalid username or password.';
     }
 }
 ?>
@@ -178,6 +187,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .form-control::placeholder {
             color: #9ca3af;
+        }
+
+        /* Password Input Wrapper */
+        .password-input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .password-toggle:hover {
+            color: #6b7280;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .password-toggle:focus {
+            outline: none;
+            color: #2563eb;
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .password-toggle i {
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .password-toggle.show-password i {
+            color: #2563eb;
         }
 
 
@@ -400,8 +453,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-group">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" id="password" name="password" class="form-control" 
-                               placeholder="Enter your password" required>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="password" name="password" class="form-control" 
+                                   placeholder="Enter your password" required>
+                            <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
+                                <i class="bi bi-eye" id="passwordIcon"></i>
+                            </button>
+                        </div>
                     </div>
 
 
@@ -444,6 +502,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 input.addEventListener('blur', function() {
                     this.parentElement.style.transform = 'scale(1)';
                 });
+            });
+
+            // Password toggle functionality
+            const passwordToggle = document.getElementById('passwordToggle');
+            const passwordInput = document.getElementById('password');
+            const passwordIcon = document.getElementById('passwordIcon');
+
+            passwordToggle.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Toggle icon
+                if (type === 'text') {
+                    passwordIcon.className = 'bi bi-eye-slash';
+                    this.classList.add('show-password');
+                } else {
+                    passwordIcon.className = 'bi bi-eye';
+                    this.classList.remove('show-password');
+                }
             });
 
             // Add loading state to form submission

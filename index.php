@@ -11,10 +11,6 @@ require_once __DIR__ . '/includes/queries.php';
 $students = fetch_students();
 $subjects = fetch_subjects();
 $grades = fetch_grades();
-// recent SMS logs for Notifications section
-if (!function_exists('fetch_sms_logs')) {
-    require_once __DIR__ . '/includes/queries.php';
-}
 $sms_logs = fetch_sms_logs(50);
 $section = isset($_GET['section']) ? $_GET['section'] : 'overview';
 ?>
@@ -22,7 +18,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : 'overview';
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SMS Grade Notifier</title>
+    <title>Hibalan</title>
     <link rel="icon" type="image/png" href="assets/ctu-logo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -113,11 +109,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : 'overview';
         </table>
     </div>
 <?php elseif ($section == 'grades'): ?>
-    <div class="dashboard-header d-flex align-items-center">
-        <h2 class="me-3 mb-0">Grade Updates</h2>
-    </div>
     <div class="form-section">
-        <h2 class="mb-3">Add/Update Grade</h2>
         <form action="update_grade.php" method="post" class="row g-3">
             <div class="col-md-3">
                 <label class="form-label">Student</label>

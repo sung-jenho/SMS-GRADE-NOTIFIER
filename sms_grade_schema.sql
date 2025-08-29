@@ -1,5 +1,14 @@
 -- SQL schema for SMS Grade Notification System
 
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    full_name VARCHAR(100) NULL,
+    email VARCHAR(150) NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE students (
     id INT AUTO_INCREMENT PRIMARY KEY,
     student_number VARCHAR(20) NOT NULL UNIQUE,

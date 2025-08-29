@@ -38,8 +38,8 @@ function user_has_permission($permission) {
     return true;
 }
 
-// Helper function to get current user data
-function get_current_user() {
+// Helper function to get current user data (renamed to avoid PHP builtin name collision)
+function get_current_user_info() {
     global $current_user;
     return $current_user;
 }

@@ -1,6 +1,33 @@
 <?php
 require_once __DIR__ . '/db.php';
 
+function find_user_by_username(string $username): ?array {
+    $mysqli = get_db_connection();
+    $stmt = $mysqli->prepare('SELECT id, username, password_hash, full_name, email FROM users WHERE username = ? LIMIT 1');
+    if (!$stmt) {
+        return null;
+    }
+    $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result ? $result->fetch_assoc() : null;
+    $stmt->close();
+    return $user ?: null;
+}
+
+function create_user(string $username, string $plaintextPassword, string $fullName, string $email): bool {
+    $mysqli = get_db_connection();
+    $passwordHash = password_hash($plaintextPassword, PASSWORD_DEFAULT);
+    $stmt = $mysqli->prepare('INSERT INTO users (username, password_hash, full_name, email) VALUES (?, ?, ?, ?)');
+    if (!$stmt) {
+        return false;
+    }
+    $stmt->bind_param('ssss', $username, $passwordHash, $fullName, $email);
+    $ok = $stmt->execute();
+    $stmt->close();
+    return $ok;
+}
+
 function fetch_students(): array {
     $mysqli = get_db_connection();
     $result = $mysqli->query('SELECT * FROM students');
