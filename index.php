@@ -3,6 +3,11 @@ require_once __DIR__ . '/includes/queries.php';
 $students = fetch_students();
 $subjects = fetch_subjects();
 $grades = fetch_grades();
+// recent SMS logs for Notifications section
+if (!function_exists('fetch_sms_logs')) {
+    require_once __DIR__ . '/includes/queries.php';
+}
+$sms_logs = fetch_sms_logs(50);
 $section = isset($_GET['section']) ? $_GET['section'] : 'overview';
 ?>
 <!DOCTYPE html>
@@ -15,19 +20,14 @@ $section = isset($_GET['section']) ? $_GET['section'] : 'overview';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="vestil-dashboard.css">
+    <link rel="stylesheet" href="vestil-dashboard.css?v=2">
 </head>
 <body>
 <?php include __DIR__ . '/partials/header.php'; ?>
 <?php include __DIR__ . '/partials/sidebar.php'; ?>
 <div class="dashboard-main">
 <?php if ($section == 'overview'): ?>
-    <div class="dashboard-header d-flex align-items-center">
-        <h2 class="me-3 mb-0">Dashboard Overview</h2>
-        <span class="status-badge">System Active</span>
-    </div>
-    <p style="color:#6c6e7e;margin-bottom:2.2rem;">Monitor your SMS grade notification system performance</p>
-    <div class="row g-4 mb-4">
+    <div class="row g-4 mb-4 metric-row">
         <div class="col-md-6">
             <div class="card-metric">
                 <span class="icon"><span class="bi bi-people"></span></span>
@@ -86,27 +86,23 @@ $section = isset($_GET['section']) ? $_GET['section'] : 'overview';
     <div class="dashboard-header d-flex align-items-center">
         <h2 class="me-3 mb-0">Students</h2>
     </div>
-    <div class="card">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Name</th>
-                            <th>Student #</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($students as $s): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($s['name']) ?></td>
-                            <td><?= htmlspecialchars($s['student_number']) ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Student #</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($students as $s): ?>
+                <tr>
+                    <td><?= htmlspecialchars($s['name']) ?></td>
+                    <td><?= htmlspecialchars($s['student_number']) ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 <?php elseif ($section == 'grades'): ?>
     <div class="dashboard-header d-flex align-items-center">
@@ -173,12 +169,46 @@ $section = isset($_GET['section']) ? $_GET['section'] : 'overview';
         </div>
     </div>
 <?php elseif ($section == 'notifications'): ?>
-    <div class="dashboard-header d-flex align-items-center">
-        <h2 class="me-3 mb-0">Notifications</h2>
+    <div class="dashboard-header d-flex align-items-center" style="margin-bottom: 0.5rem;">
+        <h2 class="me-3 mb-0">Recent SMS Logs</h2>
+        <span class="text-secondary" style="font-size:0.9rem;">Latest grade notifications sent to parents</span>
     </div>
-    <div class="card">
-        <div class="card-body text-secondary">
-            <p>No notifications to display. (Placeholder)</p>
+    <div class="card chart-card" style="border-radius:16px;">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Student</th>
+                            <th>Parent Phone</th>
+                            <th>Subject</th>
+                            <th>Grade</th>
+                            <th>Status</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($sms_logs)): ?>
+                            <?php foreach ($sms_logs as $log): ?>
+                                <?php
+                                  $status = $log['status'];
+                                  $pillClass = $status === 'Sent' ? 'badge-sent' : ($status === 'Failed' ? 'badge-failed' : 'badge-pending');
+                                ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($log['student_name']) ?></td>
+                                    <td class="text-secondary"><?= htmlspecialchars($log['parent_phone']) ?></td>
+                                    <td><?= htmlspecialchars($log['subject_title']) ?></td>
+                                    <td><span class="badge rounded-pill bg-light text-secondary" style="font-weight:600;"><?= htmlspecialchars($log['grade']) ?></span></td>
+                                    <td><span class="status-pill <?= $pillClass ?>"><?= htmlspecialchars($status) ?></span></td>
+                                    <td class="text-secondary"><?= htmlspecialchars($log['created_at']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr><td colspan="6" class="text-secondary">No SMS logs yet.</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 <?php elseif ($section == 'settings'): ?>

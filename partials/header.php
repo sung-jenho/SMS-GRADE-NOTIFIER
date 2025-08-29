@@ -6,14 +6,20 @@
     </button>
     <div class="header-logo"><img src="assets/ctu-logo.png" alt="CTU Logo" class="header-logo-img"></div>
     <div class="header-title-group">
-      <div class="header-title">SMS Grade Notifier</div>
+      <div class="header-title-row">
+        <div class="header-title">SMS Grade Notifier</div>
+        <span class="status-badge">System Active</span>
+      </div>
       <div class="header-subtitle">For college students in CTU-Consolacion.</div>
     </div>
   </div>
   <div class="header-actions">
-    <button class="header-action-btn theme-toggle" id="darkModeToggle" aria-label="Toggle dark mode">
-      <span id="darkModeIcon" class="bi bi-brightness-high"></span>
-    </button>
+    <input type="checkbox" id="darkModeToggle" class="theme-switch-input" aria-label="Toggle dark mode" />
+    <label for="darkModeToggle" class="theme-switch" aria-hidden="true">
+      <i class="bi bi-sun-fill" aria-hidden="true"></i>
+      <span class="switch-handle"></span>
+      <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
+    </label>
   </div>
 </header>
 

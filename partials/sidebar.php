@@ -2,12 +2,11 @@
 <div class="offcanvas offcanvas-start custom-offcanvas" tabindex="-1" id="mainSidebar" aria-labelledby="mainSidebarLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="mainSidebarLabel">SMS Grade System</h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     <nav class="sidebar-nav" aria-label="Primary">
       <a class="sidebar-link<?php if($section=='overview') echo ' active'; ?>" href="?section=overview">
-        <i class="bi bi-grid-3x3-gap"></i>
+        <i class="bi bi-grid-1x2"></i>
         <span>Dashboard</span>
       </a>
       <a class="sidebar-link<?php if($section=='students') echo ' active'; ?>" href="?section=students">

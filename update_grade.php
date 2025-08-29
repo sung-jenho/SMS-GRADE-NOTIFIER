@@ -83,8 +83,19 @@ function send_sms_telesign($phone, $message) {
     return $httpcode == 200;
 }
 
-// Uncomment below to enable SMS sending (fill in your credentials above)
-// send_sms_telesign($phone, $sms_message);
+// Attempt to send SMS if credentials exist; otherwise treat as Pending
+$status = 'Pending';
+if (TELESIGN_CUSTOMER_ID && TELESIGN_API_KEY) {
+    $ok = send_sms_telesign($phone, $sms_message);
+    $status = $ok ? 'Sent' : 'Failed';
+}
+
+// Log to sms_logs table
+$stmt_log = $mysqli->prepare('INSERT INTO sms_logs (student_id, subject_id, grade_snapshot, parent_phone, status, created_at) VALUES (?, ?, ?, ?, ?, NOW())');
+$grade_str = (string)$grade;
+$stmt_log->bind_param('iisss', $student_id, $subject_id, $grade_str, $phone, $status);
+$stmt_log->execute();
+$stmt_log->close();
 
 header('Location: index.php');
 exit;

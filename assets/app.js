@@ -6,23 +6,35 @@ function setDarkMode(on, persist = true) {
 }
 
 function updateIconClass(on) {
+  // Backward compatibility: if an old icon exists, update it.
   const icon = document.getElementById('darkModeIcon');
   if (icon) icon.className = on ? 'bi bi-moon' : 'bi bi-sun';
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  const darkModeBtn = document.getElementById('darkModeToggle');
+  const darkModeInput = document.getElementById('darkModeToggle');
   const stored = localStorage.getItem('darkMode');
   const media = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
   const isDark = stored === '1' ? true : stored === '0' ? false : (media ? media.matches : false);
   setDarkMode(isDark, false);
   updateIconClass(isDark);
-  if (darkModeBtn) {
-    darkModeBtn.onclick = function () {
-      const next = !document.body.classList.contains('dark-mode');
-      setDarkMode(next, true);
-      updateIconClass(next);
-    };
+  if (darkModeInput) {
+    // If it's a checkbox switch, sync its checked state and listen to changes
+    if (darkModeInput.type === 'checkbox') {
+      darkModeInput.checked = isDark;
+      darkModeInput.addEventListener('change', function () {
+        const next = !!darkModeInput.checked;
+        setDarkMode(next, true);
+        updateIconClass(next);
+      });
+    } else {
+      // Fallback for old button behavior
+      darkModeInput.onclick = function () {
+        const next = !document.body.classList.contains('dark-mode');
+        setDarkMode(next, true);
+        updateIconClass(next);
+      };
+    }
   }
 
   if (window.Chart) {

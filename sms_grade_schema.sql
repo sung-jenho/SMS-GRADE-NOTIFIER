@@ -28,3 +28,16 @@ CREATE TABLE grades (
     FOREIGN KEY (student_id) REFERENCES students(id),
     FOREIGN KEY (subject_id) REFERENCES subjects(id)
 );
+
+-- Track outbound SMS notifications related to grade updates
+CREATE TABLE IF NOT EXISTS sms_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    subject_id INT NOT NULL,
+    grade_snapshot VARCHAR(10) NOT NULL,
+    parent_phone VARCHAR(20) NOT NULL,
+    status ENUM('Sent','Pending','Failed') NOT NULL DEFAULT 'Pending',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (subject_id) REFERENCES subjects(id)
+);
