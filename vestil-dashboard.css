@@ -282,6 +282,89 @@ body.dark-mode .table thead th { border-color: rgba(255,255,255,0.06) !important
 .dark-mode .theme-switch-input:checked + .theme-switch { background: #e5e7eb; }
 .dark-mode .theme-switch-input:checked + .theme-switch i { color: #1f2937; }
 .dark-mode .theme-switch-input:checked + .theme-switch .switch-handle { background: #111827; }
+/* User menu in header */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(37, 99, 235, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(37, 99, 235, 0.1);
+}
+
+.user-avatar {
+  background: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%);
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.logout-btn {
+  background: #fef2f2;
+  color: #dc2626;
+  border: none;
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.07);
+}
+
+.logout-btn:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px 0 rgba(31, 38, 135, 0.12);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
+
+/* Dark mode variants for user menu */
+.dark-mode .user-info {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.dark-mode .user-name {
+  color: #e5e7eb;
+}
+
+.dark-mode .logout-btn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}
+
+.dark-mode .logout-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+}
+
 /* removed notification/profile controls */
 
 .dashboard-main {

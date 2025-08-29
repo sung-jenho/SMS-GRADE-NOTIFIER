@@ -20,6 +20,16 @@
       <span class="switch-handle"></span>
       <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
     </label>
+    
+    <div class="user-menu">
+      <div class="user-info">
+        <span class="user-avatar"><?= substr($_SESSION['full_name'] ?? 'A', 0, 1) ?></span>
+        <span class="user-name"><?= htmlspecialchars($_SESSION['full_name'] ?? 'Admin') ?></span>
+      </div>
+      <a href="logout.php" class="logout-btn" title="Logout">
+        <i class="bi bi-box-arrow-right"></i>
+      </a>
+    </div>
   </div>
 </header>
 

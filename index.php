@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
 require_once __DIR__ . '/includes/queries.php';
 $students = fetch_students();
 $subjects = fetch_subjects();

@@ -1,5 +1,6 @@
 <?php
 // update_grade.php - Handles grade updates and sends SMS notification via Telesign
+require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db.php';
 
 // CONFIG: Use environment variables for Telesign

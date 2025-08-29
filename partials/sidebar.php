@@ -28,10 +28,10 @@
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-user">
-        <span class="avatar-circle">A</span>
+        <span class="avatar-circle"><?= substr($_SESSION['full_name'] ?? 'A', 0, 1) ?></span>
         <div class="user-meta">
-          <div class="user-name">Admin User</div>
-          <div class="user-email">admin@school.edu</div>
+          <div class="user-name"><?= htmlspecialchars($_SESSION['full_name'] ?? 'Admin') ?></div>
+          <div class="user-email"><?= htmlspecialchars($_SESSION['email'] ?? 'admin@ctu.edu.ph') ?></div>
         </div>
       </div>
     </div>
