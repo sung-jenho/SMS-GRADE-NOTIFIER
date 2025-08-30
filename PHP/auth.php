@@ -8,7 +8,7 @@ session_start();
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ../login.php');
+    header('Location: login.php');
     exit();
 }
 
@@ -16,7 +16,7 @@ if (!isset($_SESSION['user_id'])) {
 $session_timeout = 24 * 60 * 60; // 24 hours in seconds
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $session_timeout)) {
     session_destroy();
-    header('Location: ../login.php?error=session_expired');
+    header('Location: login.php?error=session_expired');
     exit();
 }
 

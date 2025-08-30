@@ -32,11 +32,11 @@
           $png = __DIR__ . '/../assets/sir-greg.png';
           $jpg = __DIR__ . '/../assets/sir-greg.jpg';
           if (file_exists($png)) {
-            $sidebarAvatar = 'assets/sir-greg.png';
+            $sidebarAvatar = '../assets/sir-greg.png';
           } elseif (file_exists($jpg)) {
-            $sidebarAvatar = 'assets/sir-greg.jpg';
+            $sidebarAvatar = '../assets/sir-greg.jpg';
           } else {
-            $sidebarAvatar = 'assets/ctu-logo.png';
+            $sidebarAvatar = '../assets/ctu-logo.png';
           }
         ?>
         <img src="<?= $sidebarAvatar ?>" alt="Profile" class="sidebar-avatar-img" />

@@ -1,0 +1,342 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* Lottie animation container */
+.lottie-hey {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 16px auto;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f8fafc;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.login-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Left Section - Login Form */
+.login-form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: #ffffff;
+  position: relative;
+}
+
+.login-header {
+  margin-bottom: 32px;
+  text-align: center;
+  width: 100%;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+}
+
+.logo-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+.welcome-title {
+  font-size: 1.875rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 8px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.welcome-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.login-form {
+  max-width: 360px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #111827;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-control::placeholder {
+  color: #9ca3af;
+}
+
+/* Password Input Wrapper */
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.password-toggle:hover {
+  color: #6b7280;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.password-toggle:focus {
+  outline: none;
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.password-toggle i {
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.password-toggle.show-password i {
+  color: #2563eb;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px 20px;
+  background: #2563eb;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+  margin-top: 8px;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+}
+
+/* Right Section - Illustration */
+.illustration-section {
+  flex: 1;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.illustration-content {
+  text-align: center;
+  color: white;
+  position: relative;
+  z-index: 2;
+}
+
+.illustration-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.illustration-subtitle {
+  font-size: 0.875rem;
+  font-weight: 400;
+  opacity: 0.9;
+  line-height: 1.4;
+  max-width: 320px;
+}
+
+.floating-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.shape {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+
+.shape:nth-child(1) {
+  width: 60px;
+  height: 60px;
+  top: 25%;
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.shape:nth-child(2) {
+  width: 40px;
+  height: 40px;
+  top: 65%;
+  right: 25%;
+  animation-delay: 2s;
+}
+
+.shape:nth-child(3) {
+  width: 30px;
+  height: 30px;
+  bottom: 35%;
+  left: 30%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* CTU logo hero on the right panel */
+.ctu-logo-hero {
+  width: 50%;            /* occupy ~50% of the right area */
+  max-width: 520px;      /* prevent it from getting too large on big screens */
+  height: auto;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;            /* above floating shapes */
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.15));
+}
+
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+  .ctu-logo-hero { width: 60%; max-width: 420px; }
+}
+@media (max-width: 768px) {
+  .ctu-logo-hero { width: 55%; max-width: 320px; margin: 12px 0; }
+  .illustration-section { min-height: 240px; }
+}
+
+/* Error Message */
+.error-message {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.error-message i {
+  font-size: 0.875rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .login-form-section { padding: 32px; }
+  .illustration-section { padding: 32px; }
+}
+
+@media (max-width: 768px) {
+  .login-container { flex-direction: column; }
+  .login-form-section { padding: 32px 20px; order: 2; }
+  .illustration-section { padding: 40px 20px; order: 1; min-height: 200px; }
+  .welcome-title { font-size: 1.5rem; }
+  .illustration-title { font-size: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .login-form-section { padding: 24px 16px; }
+  .illustration-section { padding: 32px 16px; min-height: 180px; }
+  .welcome-title { font-size: 1.375rem; }
+  .illustration-title { font-size: 1.375rem; }
+  .brand-logo { margin-bottom: 16px; }
+  .login-header { margin-bottom: 24px; }
+}
+
+

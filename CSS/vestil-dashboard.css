@@ -530,6 +530,11 @@ body.dark-mode .table thead th { border-color: rgba(255,255,255,0.06) !important
   font-size: 0.85rem;
   font-weight: 500;
 }
+.card-metric .metric-label .metric-sub {
+  font-size: 0.95rem;
+  color: #a1a1aa;
+  font-weight: 400;
+}
 .card-metric .metric-change {
   position: absolute;
   right: 10px;

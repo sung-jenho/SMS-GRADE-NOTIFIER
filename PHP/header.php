@@ -4,10 +4,10 @@
     <button class="header-action-btn menu-btn" type="button" aria-label="Open menu" data-bs-toggle="offcanvas" data-bs-target="#mainSidebar" aria-controls="mainSidebar">
       <span class="bi bi-list"></span>
     </button>
-    <div class="header-logo"><img src="assets/ctu-logo.png" alt="CTU Logo" class="header-logo-img"></div>
+    <div class="header-logo"><img src="../assets/ctu-logo.png" alt="CTU Logo" class="header-logo-img"></div>
     <div class="header-title-group">
       <div class="header-title-row">
-        <div class="header-title">HIBALAN</div>
+        <div class="header-title">CROZONO</div>
       </div>
       
     </div>
@@ -24,11 +24,11 @@
       $png = __DIR__ . '/../assets/sir-greg.jpg';
       $jpg = __DIR__ . '/../assets/sir-greg.jpg';
       if (file_exists($png)) {
-        $avatarPath = 'assets/sir-greg.jpg';
+        $avatarPath = '../assets/sir-greg.jpg';
       } elseif (file_exists($jpg)) {
-        $avatarPath = 'assets/sir-greg.jpg';
+        $avatarPath = '../assets/sir-greg.jpg';
       } else {
-        $avatarPath = 'assets/ctu-logo.png';
+        $avatarPath = '../assets/ctu-logo.png';
       }
     ?>
     <div class="user-menu dropdown">
