@@ -202,100 +202,17 @@ body {
 /* Right Section - Illustration */
 .illustration-section {
   flex: 1;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: black;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  min-height: 100vh;
+  width: 100%;
 }
 
-.illustration-content {
-  text-align: center;
-  color: white;
-  position: relative;
-  z-index: 2;
-}
 
-.illustration-title {
-  font-size: 1.875rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-  line-height: 1.2;
-}
-
-.illustration-subtitle {
-  font-size: 0.875rem;
-  font-weight: 400;
-  opacity: 0.9;
-  line-height: 1.4;
-  max-width: 320px;
-}
-
-.floating-shapes {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-}
-
-.shape {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 50%;
-  animation: float 6s ease-in-out infinite;
-}
-
-.shape:nth-child(1) {
-  width: 60px;
-  height: 60px;
-  top: 25%;
-  left: 20%;
-  animation-delay: 0s;
-}
-
-.shape:nth-child(2) {
-  width: 40px;
-  height: 40px;
-  top: 65%;
-  right: 25%;
-  animation-delay: 2s;
-}
-
-.shape:nth-child(3) {
-  width: 30px;
-  height: 30px;
-  bottom: 35%;
-  left: 30%;
-  animation-delay: 4s;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
-}
-
-/* CTU logo hero on the right panel */
-.ctu-logo-hero {
-  width: 50%;            /* occupy ~50% of the right area */
-  max-width: 520px;      /* prevent it from getting too large on big screens */
-  height: auto;
-  object-fit: contain;
-  position: relative;
-  z-index: 2;            /* above floating shapes */
-  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.15));
-}
-
-/* Responsive tweaks */
-@media (max-width: 1024px) {
-  .ctu-logo-hero { width: 60%; max-width: 420px; }
-}
-@media (max-width: 768px) {
-  .ctu-logo-hero { width: 55%; max-width: 320px; margin: 12px 0; }
-  .illustration-section { min-height: 240px; }
-}
 
 /* Error Message */
 .error-message {

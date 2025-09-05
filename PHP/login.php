@@ -107,16 +107,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
 
-        <!-- Right Section - Illustration -->
+        <!-- Right Section - Gradient Background -->
         <div class="illustration-section">
-            <div class="floating-shapes">
-                <div class="shape"></div>
-                <div class="shape"></div>
-                <div class="shape"></div>
-            </div>
-            
-            <img src="../assets/ctu-logo.png" alt="CTU Logo" class="ctu-logo-hero" />
         </div>
+
     </div>
 
     <script src="../JAVASCRIPTS/login.js"></script>

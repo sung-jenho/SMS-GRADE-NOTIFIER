@@ -40,6 +40,7 @@
             <th>Subject Title</th>
             <th>Grade</th>
             <th>Last Updated</th>
+            <th width="50">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -51,6 +52,15 @@
             <td><?= htmlspecialchars($g['subject_title']) ?></td>
             <td><?= htmlspecialchars($g['grade']) ?></td>
             <td><?= htmlspecialchars($g['last_updated']) ?></td>
+            <td>
+              <button type="button" class="btn btn-sm btn-outline-danger remove-grade-btn" 
+                      data-grade-id="<?= htmlspecialchars($g['id']) ?>"
+                      data-student-name="<?= htmlspecialchars($g['name']) ?>"
+                      data-subject-title="<?= htmlspecialchars($g['subject_title']) ?>"
+                      title="Remove Grade">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
           </tr>
           <?php endforeach; ?>
         </tbody>

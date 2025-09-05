@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   try {
     if (window.lottie) {
+      // Load the hey animation for the left side
       window.lottie.loadAnimation({
         container: document.getElementById('heyLottie'),
         renderer: 'svg',
@@ -8,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
         autoplay: true,
         path: '../assets/hey.json'
       });
+
     }
   } catch (e) {}
 

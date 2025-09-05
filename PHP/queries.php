@@ -77,3 +77,15 @@ function fetch_sms_logs(int $limit = 50): array {
     throw $e;
   }
 }
+
+function delete_grade(int $grade_id): bool {
+  $mysqli = get_db_connection();
+  $stmt = $mysqli->prepare('DELETE FROM grades WHERE id = ?');
+  if (!$stmt) {
+    return false;
+  }
+  $stmt->bind_param('i', $grade_id);
+  $ok = $stmt->execute();
+  $stmt->close();
+  return $ok;
+}
