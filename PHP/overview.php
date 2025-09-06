@@ -11,9 +11,9 @@
     <div class="col-md-6">
         <div class="card-metric">
             <span class="icon green"><span class="bi bi-chat-dots"></span></span>
-            <span class="metric-value">348</span>
+            <span class="metric-value"><?= number_format($sms_tasks_count) ?></span>
             <span class="metric-label">SMS Grade Tasks</span>
-            <span class="metric-change green">+23%</span>
+            <span class="metric-change <?= strpos($sms_tasks_change, '+') === 0 ? 'green' : (strpos($sms_tasks_change, '-') === 0 ? 'red' : '') ?>"><?= $sms_tasks_change ?></span>
         </div>
     </div>
     </div>

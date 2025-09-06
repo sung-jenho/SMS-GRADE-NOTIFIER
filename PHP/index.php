@@ -12,6 +12,8 @@ $students = fetch_students();
 $subjects = fetch_subjects();
 $grades = fetch_grades();
 $sms_logs = fetch_sms_logs(50);
+$sms_tasks_count = get_sms_tasks_count();
+$sms_tasks_change = get_sms_tasks_change_percentage();
 $section = isset($_GET['section']) ? $_GET['section'] : 'overview';
 ?>
 <!DOCTYPE html>

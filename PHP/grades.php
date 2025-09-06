@@ -69,4 +69,38 @@
   </div>
 </div>
 
+<!-- Modern Confirmation Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">
+          <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+          Confirm Grade Removal
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-3">Are you sure you want to remove this grade?</p>
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+          <i class="bi bi-info-circle me-2"></i>
+          <div>
+            <strong>Student:</strong> <span id="modalStudentName"></span><br>
+            <strong>Subject:</strong> <span id="modalSubjectTitle"></span>
+          </div>
+        </div>
+        <p class="text-muted small mb-0">This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-1"></i>Cancel
+        </button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+          <i class="bi bi-trash me-1"></i>Remove Grade
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 

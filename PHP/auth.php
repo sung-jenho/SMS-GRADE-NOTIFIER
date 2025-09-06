@@ -31,16 +31,4 @@ $current_user = [
     'email' => $_SESSION['email'] ?? null
 ];
 
-// Helper function to check if user has specific permissions
-function user_has_permission($permission) {
-    // For now, all logged-in users have all permissions
-    // In the future, you can implement role-based access control here
-    return true;
-}
-
-// Helper function to get current user data (renamed to avoid PHP builtin name collision)
-function get_current_user_info() {
-    global $current_user;
-    return $current_user;
-}
 ?>

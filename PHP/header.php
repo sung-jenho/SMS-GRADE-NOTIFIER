@@ -21,15 +21,8 @@
     </label>
 
     <?php
-      $png = __DIR__ . '/../assets/sir-greg.jpg';
-      $jpg = __DIR__ . '/../assets/sir-greg.jpg';
-      if (file_exists($png)) {
-        $avatarPath = '../assets/sir-greg.jpg';
-      } elseif (file_exists($jpg)) {
-        $avatarPath = '../assets/sir-greg.jpg';
-      } else {
-        $avatarPath = '../assets/ctu-logo.png';
-      }
+      require_once __DIR__ . '/helpers.php';
+      $avatarPath = get_avatar_path();
     ?>
     <div class="user-menu dropdown">
       <button class="avatar-dropdown user-avatar-btn" type="button" id="userMenuDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">

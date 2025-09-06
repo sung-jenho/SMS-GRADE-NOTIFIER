@@ -32,17 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
-        // Fallback legacy hardcoded admin (optional)
-        if ($username === 'admin' && $password === 'admin123') {
-            $_SESSION['user_id'] = 1;
-            $_SESSION['username'] = 'admin';
-            $_SESSION['full_name'] = 'Administrator';
-            $_SESSION['email'] = 'admin@ctu.edu.ph';
-            $_SESSION['last_activity'] = time();
-
-            header('Location: index.php');
-            exit();
-        }
 
         $error_message = 'Invalid username or password.';
     }
