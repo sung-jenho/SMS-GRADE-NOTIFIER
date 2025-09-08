@@ -7,8 +7,7 @@
 </div>
 
 <!-- Add Student Form -->
-<div class="card mt-4">
-  <div class="card-body">
+<div class="students-form-container">
     <form id="addStudentForm" class="row g-3">
       <div class="col-md-6">
         <label for="student_number" class="form-label">Student Number <span class="text-danger">*</span></label>
@@ -52,11 +51,10 @@
         </button>
       </div>
     </form>
-  </div>
 </div>
 
 <!-- Students Table -->
-<div class="card mt-4">
+<div class="students-table-container">
   <div class="card-header d-flex justify-content-between align-items-center">
     <h5 class="mb-0">Student List</h5>
     <span class="badge bg-primary"><?= count($students) ?> students</span>
@@ -89,35 +87,33 @@
                 </div>
               </td>
               <td>
-                <span class="badge bg-light text-dark"><?= htmlspecialchars($s['student_number']) ?></span>
+                <span class="badge badge-purple"><?= htmlspecialchars($s['student_number']) ?></span>
               </td>
               <td><?= htmlspecialchars($s['course'] ?? 'N/A') ?></td>
               <td>
                 <span class="badge bg-info"><?= htmlspecialchars($s['year_level'] ?? 'N/A') ?> Year</span>
               </td>
               <td>
-                <a href="tel:<?= htmlspecialchars($s['phone_number']) ?>" class="text-decoration-none">
-                  <i class="bi bi-telephone me-1"></i><?= htmlspecialchars($s['phone_number']) ?>
-                </a>
+                <span class="text-body">
+                  <i class="bi bi-telephone me-1 text-secondary"></i><?= htmlspecialchars($s['phone_number']) ?>
+                </span>
               </td>
               <td>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-sm btn-outline-primary edit-student-btn" 
-                          data-student-id="<?= htmlspecialchars($s['id']) ?>"
-                          data-student-number="<?= htmlspecialchars($s['student_number']) ?>"
-                          data-name="<?= htmlspecialchars($s['name']) ?>"
-                          data-course="<?= htmlspecialchars($s['course'] ?? '') ?>"
-                          data-year-level="<?= htmlspecialchars($s['year_level'] ?? '') ?>"
-                          data-phone-number="<?= htmlspecialchars($s['phone_number']) ?>"
-                          title="Edit Student">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button type="button" class="btn btn-sm btn-outline-danger delete-student-btn" 
-                          data-student-id="<?= htmlspecialchars($s['id']) ?>"
-                          data-student-name="<?= htmlspecialchars($s['name']) ?>"
-                          title="Delete Student">
-                    <i class="bi bi-trash"></i>
-                  </button>
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-pencil edit-student-btn" 
+                     role="button"
+                     data-student-id="<?= htmlspecialchars($s['id']) ?>"
+                     data-student-number="<?= htmlspecialchars($s['student_number']) ?>"
+                     data-name="<?= htmlspecialchars($s['name']) ?>"
+                     data-course="<?= htmlspecialchars($s['course'] ?? '') ?>"
+                     data-year-level="<?= htmlspecialchars($s['year_level'] ?? '') ?>"
+                     data-phone-number="<?= htmlspecialchars($s['phone_number']) ?>"
+                     title="Edit Student"></i>
+                  <i class="bi bi-dash-circle delete-student-btn" 
+                     role="button"
+                     data-student-id="<?= htmlspecialchars($s['id']) ?>"
+                     data-student-name="<?= htmlspecialchars($s['name']) ?>"
+                     title="Delete Student"></i>
                 </div>
               </td>
             </tr>

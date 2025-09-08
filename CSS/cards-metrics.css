@@ -1,0 +1,329 @@
+/* Cards & Metrics Styles */
+
+.card-metric {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 10px 0 rgba(31, 38, 135, 0.06);
+  padding: 14px;
+  margin: 10px 0 0 0;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 120px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.card-metric:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(31,38,135,0.12);
+}
+
+.card-metric:active { 
+  transform: translateY(0) scale(0.98); 
+  box-shadow: 0 2px 10px rgba(31,38,135,0.10); 
+}
+
+/* Ripple on click */
+.card-metric.card-pressed::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(96, 165, 250, 0.25);
+  transform: translate(-50%, -50%) scale(1);
+  animation: ripple 320ms ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  from { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  to   { opacity: 0;   transform: translate(-50%, -50%) scale(22); }
+}
+
+/* Ensure both top metric cards align identically */
+.metric-row .col-md-6 { 
+  display: flex; 
+}
+
+.metric-row .col-md-6 > .card-metric { 
+  width: 100%; 
+}
+
+.card-metric .metric-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #23272f;
+  margin-bottom: 0;
+}
+
+/* Pill badges for leading metric numbers */
+.metric-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  line-height: 1;
+  font-size: 1rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.pill-green {
+  background: rgba(16,185,129,0.10);
+  color: #059669;
+  border-color: #a7f3d0;
+}
+
+.pill-red {
+  background: rgba(239,68,68,0.10);
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+/* Reserve space and position for right-side Lottie animation */
+.card-metric.has-right-anim { 
+  padding-right: 190px; 
+}
+
+.card-metric .lottie-right {
+  position: absolute;
+  right: 80px; /* move further left from the edge */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 150px; /* larger but within reserved space */
+  height: 150px;
+  pointer-events: none; /* keep card clickable */
+}
+
+/* Specific sizing for students animation - make it taller and wider */
+.card-metric #studentsLottie {
+  width: 170px;
+  height: 170px;
+  right: 70px; /* adjust position to accommodate larger size */
+}
+
+@media (max-width: 600px) {
+  .card-metric.has-right-anim { 
+    padding-right: 140px; 
+  }
+  .card-metric .lottie-right { 
+    width: 110px; 
+    height: 110px; 
+    right: 16px; 
+  }
+  .card-metric { 
+    min-width: 0; 
+    max-width: 100vw; 
+    margin-left: 0; 
+  }
+}
+
+.card-metric .metric-label {
+  color: #000 !important; /* pitch black */
+  font-size: 1rem;        /* align with other headings */
+  font-weight: 600;        /* semibold */
+  letter-spacing: .02em;
+}
+
+.card-metric .metric-label .metric-sub {
+  font-size: 0.95rem;
+  color: #a1a1aa;
+  font-weight: 400;
+}
+
+.card-metric .metric-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card-metric .metric-subtitle {
+  color: #6b7280;
+  font-size: 0.70rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.card-metric .metric-change {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: #fffbe6;
+  color: #f7b267;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border: 1px solid #ffe066;
+  box-shadow: 0 1px 4px 0 rgba(31, 38, 135, 0.04);
+}
+
+.card-metric .metric-change.green {
+  color: #059669;
+  border: 1.5px solid #a7f3d0;
+  background: #f0fdf4;
+}
+
+.settings-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px 0 rgba(31, 38, 135, 0.08);
+  padding: 32px 24px;
+  margin-top: 24px;
+  font-size: 1.1rem;
+  color: #374151;
+}
+
+/* Chart cards */
+.chart-card {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px 0 rgba(31, 38, 135, 0.08);
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.chart-card:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 22px rgba(31,38,135,0.12); 
+}
+
+.chart-card:active { 
+  transform: translateY(0) scale(0.99); 
+  box-shadow: 0 4px 14px rgba(31,38,135,0.10); 
+}
+
+.chart-card.card-pressed::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.18);
+  transform: translate(-50%, -50%) scale(1);
+  animation: ripple 320ms ease-out forwards;
+  pointer-events: none;
+}
+
+.chart-wrapper { 
+  height: 220px; 
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.legend-green { 
+  background: #22c55e; 
+}
+
+.legend-amber { 
+  background: #f59e0b; 
+}
+
+.legend-red { 
+  background: #ef4444; 
+}
+
+.chart-legend { 
+  display: flex; 
+  gap: 14px; 
+  color: #7c88a4; 
+  transition: color 0.3s ease; 
+}
+
+/* Make chart section headers pitch black, semibold, and consistent size */
+.chart-card .fw-semibold { 
+  color: #000 !important; 
+  font-weight: 600 !important; 
+  font-size: 1rem; 
+}
+
+.chart-subtitle {
+  font-size: 0.70rem !important;
+}
+
+/* Dark mode variants for metric cards */
+.dark-mode .card, .dark-mode .chart-card, .dark-mode .settings-card {
+  background: #232b3b !important;
+  color: #e5e7eb;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.16);
+  border: none;
+}
+
+.dark-mode .card-metric {
+  background: #232b3b;
+  color: #e5e7eb;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.28);
+  border: none;
+}
+
+.dark-mode .card-metric .metric-value { 
+  color: #e5e7eb; 
+}
+
+.dark-mode .card-metric .metric-label { 
+  color: #e5e7eb !important; 
+}
+
+.dark-mode .card-metric .icon { 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25); 
+}
+
+.dark-mode .card-metric .metric-change {
+  background: rgba(250, 204, 21, 0.12); /* amber */
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+}
+
+.dark-mode .card-metric .metric-change.green {
+  background: rgba(16, 185, 129, 0.12); /* emerald */
+  color: #34d399;
+  border: 1.5px solid rgba(16, 185, 129, 0.35);
+}
+
+.dark-mode .card-metric .metric-subtitle {
+  color: #9ca3af;
+}
+
+.dark-mode .chart-subtitle {
+  color: #9ca3af !important;
+}
+
+/* Smooth dark mode for chart cards */
+.dark-mode .chart-card { 
+  box-shadow: 0 6px 24px rgba(0,0,0,0.28); 
+}
+
+.dark-mode .chart-legend { 
+  color: #9ca3af; 
+}
+
+.chart-card .badge { 
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
+}
+
+.dark-mode .chart-card .badge { 
+  background: #111827 !important; 
+  color: #e5e7eb; 
+  border: 1px solid rgba(255,255,255,0.12); 
+}
+
+/* Dark mode override for chart headers */
+.dark-mode .chart-card .fw-semibold {
+  color: #e5e7eb !important;
+}

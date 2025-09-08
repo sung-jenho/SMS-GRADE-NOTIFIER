@@ -13,12 +13,9 @@
     </div>
   </div>
   <div class="header-actions">
-    <input type="checkbox" id="darkModeToggle" class="theme-switch-input" aria-label="Toggle dark mode" />
-    <label for="darkModeToggle" class="theme-switch" aria-hidden="true">
-      <i class="bi bi-sun-fill" aria-hidden="true"></i>
-      <span class="switch-handle"></span>
-      <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
-    </label>
+    <button type="button" id="darkModeToggle" class="sleek-theme-toggle" aria-label="Toggle dark mode">
+      <i class="bi bi-sun-fill theme-icon"></i>
+    </button>
 
     <?php
       require_once __DIR__ . '/helpers.php';
@@ -30,7 +27,12 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-end user-menu-dropdown" aria-labelledby="userMenuDropdown">
         <li><h6 class="dropdown-header">Account</h6></li>
-        <li><a class="dropdown-item" href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+        <li>
+          <a class="dropdown-item logout-link" id="logoutLink" href="logout.php" role="button">
+            <i class="bi bi-box-arrow-right me-2"></i>
+            <span>Logout</span>
+          </a>
+        </li>
       </ul>
     </div>
   </div>

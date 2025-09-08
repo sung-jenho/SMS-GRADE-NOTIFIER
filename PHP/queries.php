@@ -22,6 +22,7 @@ function fetch_students(): array {
     return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
 }
 
+
 function create_student(string $studentNumber, string $name, string $course, int $yearLevel, string $phoneNumber): bool {
     $mysqli = get_db_connection();
     
@@ -178,23 +179,6 @@ function delete_sms_log(int $sms_log_id): bool {
   return $ok;
 }
 
-function clear_test_sms_logs(): bool {
-  $mysqli = get_db_connection();
-  // Delete SMS logs that appear to be test data based on patterns:
-  // 1. Future dates (after current date)
-  // 2. Phone numbers with +1-555- pattern (test numbers)
-  // 3. Grade snapshots that are just numbers (like "5")
-  $stmt = $mysqli->prepare('DELETE FROM sms_logs WHERE 
-    created_at > NOW() OR 
-    parent_phone LIKE "+1-555-%" OR 
-    grade_snapshot REGEXP "^[0-9]+$"');
-  if (!$stmt) {
-    return false;
-  }
-  $ok = $stmt->execute();
-  $stmt->close();
-  return $ok;
-}
 
 function clear_all_sms_logs(): bool {
   $mysqli = get_db_connection();
@@ -242,12 +226,16 @@ function get_sms_delivery_chart_data(): array {
   $mysqli = get_db_connection();
   
   try {
-    // Get last 7 days of SMS delivery rates
+    // Get last 7 days of SMS delivery data with separate rates for each status
     $sql = "SELECT 
               DATE(created_at) as date,
               COUNT(*) as total,
               SUM(CASE WHEN status = 'sent' THEN 1 ELSE 0 END) as delivered,
-              ROUND((SUM(CASE WHEN status = 'sent' THEN 1 ELSE 0 END) / COUNT(*)) * 100, 1) as rate
+              SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending,
+              SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) as failed,
+              ROUND((SUM(CASE WHEN status = 'sent' THEN 1 ELSE 0 END) / COUNT(*)) * 100, 1) as delivered_rate,
+              ROUND((SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) / COUNT(*)) * 100, 1) as pending_rate,
+              ROUND((SUM(CASE WHEN status = 'failed' THEN 1 ELSE 0 END) / COUNT(*)) * 100, 1) as failed_rate
             FROM sms_logs 
             WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
             GROUP BY DATE(created_at)
@@ -256,10 +244,11 @@ function get_sms_delivery_chart_data(): array {
     $result = $mysqli->query($sql);
     $data = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
     
-    // Fill in missing days with 0% rate
-    $chart_data = [];
+    // Fill in missing days with 0% rates
     $labels = [];
-    $rates = [];
+    $delivered_rates = [];
+    $pending_rates = [];
+    $failed_rates = [];
     
     for ($i = 6; $i >= 0; $i--) {
       $date = date('Y-m-d', strtotime("-$i days"));
@@ -271,26 +260,36 @@ function get_sms_delivery_chart_data(): array {
       $found = false;
       foreach ($data as $row) {
         if ($row['date'] === $date) {
-          $rates[] = (float)$row['rate'];
+          $delivered_rates[] = (float)$row['delivered_rate'];
+          $pending_rates[] = (float)$row['pending_rate'];
+          $failed_rates[] = (float)$row['failed_rate'];
           $found = true;
           break;
         }
       }
       
       if (!$found) {
-        $rates[] = 0; // No SMS sent on this day
+        $delivered_rates[] = 0;
+        $pending_rates[] = 0;
+        $failed_rates[] = 0;
       }
     }
     
     return [
       'labels' => $labels,
-      'rates' => $rates
+      'delivered_rates' => $delivered_rates,
+      'pending_rates' => $pending_rates,
+      'failed_rates' => $failed_rates,
+      'rates' => $delivered_rates // Keep for backward compatibility
     ];
   } catch (mysqli_sql_exception $e) {
     // Return default chart data if table doesn't exist
     return [
       'labels' => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      'rates' => [0, 0, 0, 0, 0, 0, 0] // No data available
+      'delivered_rates' => [0, 0, 0, 0, 0, 0, 0],
+      'pending_rates' => [0, 0, 0, 0, 0, 0, 0],
+      'failed_rates' => [0, 0, 0, 0, 0, 0, 0],
+      'rates' => [0, 0, 0, 0, 0, 0, 0] // Keep for backward compatibility
     ];
   }
 }
@@ -343,7 +342,191 @@ function get_sms_tasks_change_percentage(): string {
   }
 }
 
-// Grade Distribution Functions
+// Grade Distribution Functions - by Subject
+function get_subject_grade_distribution(): array {
+  $mysqli = get_db_connection();
+  
+  try {
+    // Get ALL subjects from database and their grade counts
+    $sql = "SELECT 
+              s.subject_code,
+              s.subject_title,
+              COALESCE(grade_counts.count, 0) as count,
+              COALESCE(grade_counts.avg_grade, 0) as avg_grade
+            FROM subjects s
+            LEFT JOIN (
+              SELECT 
+                subject_id,
+                COUNT(*) as count,
+                AVG(grade) as avg_grade
+              FROM grades 
+              WHERE grade IS NOT NULL
+              GROUP BY subject_id
+            ) grade_counts ON s.id = grade_counts.subject_id
+            ORDER BY s.subject_code";
+    
+    $result = $mysqli->query($sql);
+    $data = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+    
+    $distribution = [];
+    $colors = ['#22c55e', '#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#84cc16', '#f97316', '#ec4899', '#8b5cf6'];
+    
+    foreach ($data as $index => $row) {
+      $distribution[] = [
+        'label' => $row['subject_code'],
+        'full_name' => $row['subject_title'],
+        'count' => (int)$row['count'],
+        'avg_grade' => $row['count'] > 0 ? round((float)$row['avg_grade'], 2) : 0,
+        'color' => $colors[$index % count($colors)]
+      ];
+    }
+    
+    return $distribution;
+  } catch (mysqli_sql_exception $e) {
+    return [];
+  }
+}
+
+// Basic Data Retrieval Functions
+function get_students(): array {
+  $mysqli = get_db_connection();
+  
+  try {
+    $sql = "SELECT id, student_number, name, course, year_level, phone_number 
+            FROM students 
+            ORDER BY name";
+    
+    $result = $mysqli->query($sql);
+    return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+  } catch (mysqli_sql_exception $e) {
+    return [];
+  }
+}
+
+function get_subjects(): array {
+  $mysqli = get_db_connection();
+  
+  try {
+    $sql = "SELECT id, subject_code, subject_title, units, schedule, days, room 
+            FROM subjects 
+            ORDER BY subject_code";
+    
+    $result = $mysqli->query($sql);
+    return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+  } catch (mysqli_sql_exception $e) {
+    return [];
+  }
+}
+
+function get_grades(): array {
+  $mysqli = get_db_connection();
+  
+  try {
+    $sql = "SELECT g.id, g.student_id, g.subject_id, g.grade, g.last_updated,
+                   s.name as student_name, s.student_number,
+                   sub.subject_code, sub.subject_title
+            FROM grades g
+            JOIN students s ON g.student_id = s.id
+            JOIN subjects sub ON g.subject_id = sub.id
+            ORDER BY g.last_updated DESC";
+    
+    $result = $mysqli->query($sql);
+    return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+  } catch (mysqli_sql_exception $e) {
+    return [];
+  }
+}
+
+function get_sms_logs(): array {
+  $mysqli = get_db_connection();
+  
+  try {
+    $sql = "SELECT sl.id, sl.student_id, sl.subject_id, sl.grade_snapshot, 
+                   sl.parent_phone, sl.status, sl.created_at,
+                   s.name as student_name, s.student_number,
+                   sub.subject_code, sub.subject_title
+            FROM sms_logs sl
+            JOIN students s ON sl.student_id = s.id
+            JOIN subjects sub ON sl.subject_id = sub.id
+            ORDER BY sl.created_at DESC";
+    
+    $result = $mysqli->query($sql);
+    return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+  } catch (mysqli_sql_exception $e) {
+    return [];
+  }
+}
+
+// Subject Management Functions
+function get_all_subjects(): array {
+  $mysqli = get_db_connection();
+  
+  try {
+    $sql = "SELECT id, subject_code, subject_title, units, schedule, days, room 
+            FROM subjects 
+            ORDER BY subject_code";
+    
+    $result = $mysqli->query($sql);
+    return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+  } catch (mysqli_sql_exception $e) {
+    return [];
+  }
+}
+
+function add_subject(string $subject_code, string $subject_title, ?int $units = null, ?string $schedule = null, ?string $days = null, ?string $room = null): bool {
+  $mysqli = get_db_connection();
+  
+  try {
+    $stmt = $mysqli->prepare("INSERT INTO subjects (subject_code, subject_title, units, schedule, days, room) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssdsss", $subject_code, $subject_title, $units, $schedule, $days, $room);
+    return $stmt->execute();
+  } catch (mysqli_sql_exception $e) {
+    return false;
+  }
+}
+
+function update_subject(int $subject_id, string $subject_code, string $subject_title, ?int $units = null, ?string $schedule = null, ?string $days = null, ?string $room = null): bool {
+  $mysqli = get_db_connection();
+  
+  try {
+    $stmt = $mysqli->prepare("UPDATE subjects SET subject_code = ?, subject_title = ?, units = ?, schedule = ?, days = ?, room = ? WHERE id = ?");
+    if (!$stmt) {
+      return false;
+    }
+    // Types: s (code), s (title), d (units), s (schedule), s (days), s (room), i (id)
+    $stmt->bind_param("ssdsssi", $subject_code, $subject_title, $units, $schedule, $days, $room, $subject_id);
+    $ok = $stmt->execute();
+    $stmt->close();
+    return $ok;
+  } catch (mysqli_sql_exception $e) {
+    return false;
+  }
+}
+
+function delete_subject(int $subject_id): bool {
+  $mysqli = get_db_connection();
+  
+  try {
+    // Check if subject has grades
+    $check_stmt = $mysqli->prepare("SELECT COUNT(*) FROM grades WHERE subject_id = ?");
+    $check_stmt->bind_param("i", $subject_id);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
+    $grade_count = $check_result->fetch_row()[0];
+    
+    if ($grade_count > 0) {
+      return false; // Cannot delete subject with existing grades
+    }
+    
+    $stmt = $mysqli->prepare("DELETE FROM subjects WHERE id = ?");
+    $stmt->bind_param("i", $subject_id);
+    return $stmt->execute();
+  } catch (mysqli_sql_exception $e) {
+    return false;
+  }
+}
+
+// Legacy function for backward compatibility
 function get_grade_distribution(): array {
   $mysqli = get_db_connection();
   

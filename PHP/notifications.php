@@ -1,21 +1,17 @@
 <?php /** @var array $sms_logs */ ?>
-<div class="dashboard-header d-flex align-items-center justify-content-between">
+<div class="sms-logs-header d-flex align-items-center justify-content-between">
   <div>
     <h2 class="me-3 mb-0">Recent SMS Logs</h2>
     <span class="text-secondary" style="font-size:0.9rem;">Latest grade notifications sent to parents</span>
   </div>
-  <div>
-    <button type="button" class="btn btn-outline-warning btn-sm me-2" id="clearTestDataBtn" title="Remove test data only">
-      <i class="bi bi-trash"></i> Clear Test Data
-    </button>
-    <button type="button" class="btn btn-outline-danger btn-sm" id="clearAllDataBtn" title="Remove all SMS logs">
-      <i class="bi bi-trash-fill"></i> Clear All
+  <div class="me-3">
+    <button type="button" class="btn btn-danger px-3 py-1 rounded-pill shadow-sm" id="clearAllDataBtn" title="Remove all SMS logs" style="font-size: 0.8rem; font-weight: 500; letter-spacing: 0.3px; transition: all 0.3s ease;">
+      Clear All
     </button>
   </div>
 </div>
-<div class="card chart-card">
-  <div class="card-body">
-    <div class="table-responsive">
+<div class="sms-logs-table-container">
+  <div class="table-responsive">
       <table class="table table-hover align-middle">
         <thead class="table-light">
           <tr>
@@ -34,32 +30,51 @@
               <?php
                 $status = $log['status'];
                 $pillClass = $status === 'Sent' ? 'badge-sent' : ($status === 'Failed' ? 'badge-failed' : 'badge-pending');
+                // Determine grade pill color using same thresholds as Grades section
+                $gradeVal = is_numeric($log['grade_snapshot']) ? (float)$log['grade_snapshot'] : null;
+                if ($gradeVal !== null && $gradeVal >= 1.0 && $gradeVal <= 2.0) {
+                  $gradeBadge = 'badge-grade-green';
+                } elseif ($gradeVal !== null && $gradeVal > 2.0 && $gradeVal <= 2.9) {
+                  $gradeBadge = 'badge-grade-amber';
+                } else {
+                  $gradeBadge = 'badge-grade-red';
+                }
+                // Short timestamp like 25/9/7 22:40
+                $ts = strtotime($log['created_at']);
+                $shortTs = $ts ? date('y/n/j H:i', $ts) : $log['created_at'];
               ?>
               <tr>
                 <td><?= htmlspecialchars($log['student_name']) ?></td>
                 <td class="text-secondary"><?= htmlspecialchars($log['parent_phone']) ?></td>
                 <td><?= htmlspecialchars($log['subject_title']) ?></td>
-                <td><span class="badge rounded-pill bg-light text-secondary fw-semibold"><?= htmlspecialchars($log['grade']) ?></span></td>
+                <td><span class="badge <?= $gradeBadge ?>"><?= htmlspecialchars($log['grade_snapshot']) ?></span></td>
                 <td><span class="status-pill <?= $pillClass ?>"><?= htmlspecialchars($status) ?></span></td>
-                <td class="text-secondary"><?= htmlspecialchars($log['created_at']) ?></td>
+                <td class="text-secondary"><?= htmlspecialchars($shortTs) ?></td>
                 <td>
-                  <button type="button" class="btn btn-sm btn-outline-danger remove-sms-log-btn" 
-                          data-sms-log-id="<?= htmlspecialchars($log['id']) ?>"
-                          data-student-name="<?= htmlspecialchars($log['student_name']) ?>"
-                          data-subject-title="<?= htmlspecialchars($log['subject_title']) ?>"
-                          title="Remove SMS Log">
-                    <i class="bi bi-trash"></i>
-                  </button>
+                  <?php if ($status === 'Pending'): ?>
+                    <i class="bi bi-send send-sms-btn me-2" 
+                       data-sms-log-id="<?= htmlspecialchars($log['id']) ?>"
+                       data-student-name="<?= htmlspecialchars($log['student_name']) ?>"
+                       data-parent-phone="<?= htmlspecialchars($log['parent_phone']) ?>"
+                       data-subject-title="<?= htmlspecialchars($log['subject_title']) ?>"
+                       data-grade="<?= htmlspecialchars($log['grade_snapshot']) ?>"
+                       title="Send SMS"
+                       style="color: #28a745; cursor: pointer;"></i>
+                  <?php endif; ?>
+                  <i class="bi bi-dash-circle remove-sms-log-btn" 
+                     data-sms-log-id="<?= htmlspecialchars($log['id']) ?>"
+                     data-student-name="<?= htmlspecialchars($log['student_name']) ?>"
+                     data-subject-title="<?= htmlspecialchars($log['subject_title']) ?>"
+                     title="Remove SMS Log"></i>
                 </td>
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
-            <tr><td colspan="7" class="text-secondary">No SMS logs yet.</td></tr>
+            <tr><td colspan="7" class="sms-logs-empty-state"><i class="bi bi-chat-dots"></i><h4>No SMS Logs Yet</h4><p>SMS notifications will appear here once grades are sent to parents.</p></td></tr>
           <?php endif; ?>
         </tbody>
       </table>
     </div>
-  </div>
 </div>
 
 <!-- Confirmation Modal for Single SMS Log Deletion -->
@@ -67,9 +82,9 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="confirmSmsDeleteModalLabel">
+        <h5 class="modal-title" id="confirmSmsDeleteModalLabel" style="font-size: 0.95rem; font-weight: 600;">
           <i class="bi bi-exclamation-triangle text-warning me-2"></i>
-          Confirm SMS Log Removal
+          CONFIRM SMS LOG REMOVAL
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -85,47 +100,60 @@
         <p class="text-muted small mb-0">This action cannot be undone.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          <i class="bi bi-x-circle me-1"></i>Cancel
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+          Cancel
         </button>
-        <button type="button" class="btn btn-danger" id="confirmSmsDeleteBtn">
-          <i class="bi bi-trash me-1"></i>Remove SMS Log
+        <button type="button" class="btn btn-danger btn-sm" id="confirmSmsDeleteBtn" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+          Remove SMS Log
         </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Confirmation Modal for Clearing Test Data -->
-<div class="modal fade" id="confirmClearTestModal" tabindex="-1" aria-labelledby="confirmClearTestModalLabel" aria-hidden="true">
+<!-- SMS Sending Modal -->
+<div class="modal fade" id="sendSmsModal" tabindex="-1" aria-labelledby="sendSmsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="confirmClearTestModalLabel">
-          <i class="bi bi-exclamation-triangle text-warning me-2"></i>
-          Clear Test Data
+        <h5 class="modal-title" id="sendSmsModalLabel" style="font-size: 0.95rem; font-weight: 600;">
+          <i class="bi bi-send text-success me-2"></i>
+          SEND SMS NOTIFICATION
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p class="mb-3">This will remove all test SMS logs based on the following criteria:</p>
-        <ul class="list-unstyled">
-          <li><i class="bi bi-calendar-x text-danger me-2"></i>Future dates (after current date)</li>
-          <li><i class="bi bi-telephone text-danger me-2"></i>Phone numbers with +1-555- pattern</li>
-          <li><i class="bi bi-123 text-danger me-2"></i>Grade snapshots that are just numbers</li>
-        </ul>
-        <div class="alert alert-info d-flex align-items-center" role="alert">
-          <i class="bi bi-info-circle me-2"></i>
-          <div>Real SMS logs will be preserved.</div>
-        </div>
-        <p class="text-muted small mb-0">This action cannot be undone.</p>
+        <form id="smsForm">
+          <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+            <i class="bi bi-info-circle me-2"></i>
+            <div>
+              <strong>Student:</strong> <span id="smsStudentName"></span><br>
+              <strong>Subject:</strong> <span id="smsSubjectTitle"></span><br>
+              <strong>Grade:</strong> <span id="smsGrade"></span>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="smsPhoneNumber" class="form-label">Parent Phone Number</label>
+            <input type="tel" class="form-control" id="smsPhoneNumber" readonly>
+          </div>
+          
+          <div class="mb-3">
+            <label for="smsMessage" class="form-label">SMS Message</label>
+            <textarea class="form-control" id="smsMessage" rows="4" placeholder="Grade notification message will be generated automatically..."></textarea>
+            <div class="form-text">You can customize the message before sending.</div>
+          </div>
+          
+          <input type="hidden" id="smsLogId">
+        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          <i class="bi bi-x-circle me-1"></i>Cancel
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+          Cancel
         </button>
-        <button type="button" class="btn btn-warning" id="confirmClearTestBtn">
-          <i class="bi bi-trash me-1"></i>Clear Test Data
+        <button type="button" class="btn btn-success btn-sm" id="confirmSendSmsBtn" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+          <i class="bi bi-send me-1"></i>
+          Send SMS
         </button>
       </div>
     </div>
@@ -137,9 +165,9 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="confirmClearAllModalLabel">
+        <h5 class="modal-title" id="confirmClearAllModalLabel" style="font-size: 0.95rem; font-weight: 600;">
           <i class="bi bi-exclamation-triangle text-danger me-2"></i>
-          Clear All SMS Logs
+          CLEAR ALL SMS LOGS
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -155,11 +183,11 @@
         <p class="text-muted small mb-0">This action cannot be undone.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          <i class="bi bi-x-circle me-1"></i>Cancel
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+          Cancel
         </button>
-        <button type="button" class="btn btn-danger" id="confirmClearAllBtn">
-          <i class="bi bi-trash-fill me-1"></i>Clear All Data
+        <button type="button" class="btn btn-danger btn-sm" id="confirmClearAllBtn" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+          Clear All Data
         </button>
       </div>
     </div>

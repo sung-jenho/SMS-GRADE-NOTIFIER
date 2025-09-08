@@ -30,12 +30,17 @@ $action = $_POST['action'] ?? '';
 try {
     if ($action === 'create') {
         // Validate required fields
-        $required_fields = ['student_number', 'name', 'course', 'year_level', 'phone_number'];
+        $required_fields = ['student_number', 'name', 'year_level', 'phone_number'];
         foreach ($required_fields as $field) {
             if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
                 echo json_encode(['success' => false, 'message' => "Field '$field' is required"]);
                 exit;
             }
+        }
+        
+        // Course is optional, so handle it separately
+        if (!isset($_POST['course'])) {
+            $_POST['course'] = '';
         }
         
         $studentNumber = trim($_POST['student_number']);
@@ -55,7 +60,6 @@ try {
             echo json_encode(['success' => false, 'message' => 'Invalid phone number format']);
             exit;
         }
-        
         $success = create_student($studentNumber, $name, $course, $yearLevel, $phoneNumber);
         
         if ($success) {
@@ -71,12 +75,17 @@ try {
             exit;
         }
         
-        $required_fields = ['student_number', 'name', 'course', 'year_level', 'phone_number'];
+        $required_fields = ['student_number', 'name', 'year_level', 'phone_number'];
         foreach ($required_fields as $field) {
             if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
                 echo json_encode(['success' => false, 'message' => "Field '$field' is required"]);
                 exit;
             }
+        }
+        
+        // Course is optional, so handle it separately
+        if (!isset($_POST['course'])) {
+            $_POST['course'] = '';
         }
         
         $studentId = (int)$_POST['student_id'];

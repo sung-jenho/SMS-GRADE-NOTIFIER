@@ -1,0 +1,86 @@
+/* Bootstrap Icons Fix - Ensures icons display properly */
+
+/* Core Bootstrap Icons font-family and base styles */
+.bi::before,
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
+  display: inline-block;
+  font-family: "bootstrap-icons" !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: -.125em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure icons are visible and properly sized */
+.bi {
+  font-family: "bootstrap-icons" !important;
+}
+
+/* Ensure icons maintain proper spacing and alignment */
+.btn .bi,
+.sidebar-link .bi,
+.header-action-btn .bi {
+  margin-right: 0.5rem;
+}
+
+.btn .bi:only-child,
+.header-action-btn .bi:only-child {
+  margin-right: 0;
+}
+
+/* Fix for icon buttons that should display as buttons */
+.bi-pencil,
+.bi-dash-circle,
+.bi-trash {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+/* Ensure hamburger menu icon is visible */
+.menu-btn .bi-list {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+/* Ensure dark mode toggle icon is visible */
+.sleek-theme-toggle .theme-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Fix for sidebar icons */
+.sidebar-link i.bi {
+  font-size: 0.9rem;
+  width: 16px;
+  text-align: center;
+  line-height: 1;
+}
+
+/* Ensure table action icons are properly sized */
+.subjects-table-container .bi-pencil,
+.subjects-table-container .bi-dash-circle,
+.grades-table-container .bi-dash-circle,
+.sms-logs-table-container .bi-dash-circle {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem !important;
+  line-height: 1;
+}
+
+/* Fix for empty state icons */
+.subjects-empty-state .bi-book,
+.sms-logs-empty-state .bi-chat-dots {
+  display: block;
+  line-height: 1;
+}

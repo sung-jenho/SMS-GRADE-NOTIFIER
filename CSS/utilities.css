@@ -1,0 +1,41 @@
+/* Utilities Styles */
+
+/* Empty state styling */
+.text-center.text-muted.py-4 {
+  padding: 3rem 1rem !important;
+}
+
+.text-center.text-muted.py-4 i {
+  opacity: 0.5;
+}
+
+/* Loading states */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Form validation styles */
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.is-valid {
+  border-color: #198754;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #dc3545;
+}
+
+.valid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #198754;
+}

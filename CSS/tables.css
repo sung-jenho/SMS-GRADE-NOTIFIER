@@ -1,0 +1,155 @@
+/* Tables Styles */
+
+/* Tables: light + dark mode with .3s transitions using Bootstrap vars */
+.table {
+  /* Light mode defaults */
+  --bs-table-color: #23272f;
+  --bs-table-bg: #ffffff;
+  --bs-table-border-color: rgba(0,0,0,0.12);
+  --bs-table-striped-bg: #fbfdff;
+  --bs-table-hover-bg: #f8fafc;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.table thead {
+  color: #111827;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.table thead.table-light { /* when .table-light is incorrectly applied to thead */
+  background-color: #f8fafc !important;
+  color: #111827 !important;
+}
+
+.table thead.table-light th { 
+  background-color: inherit; 
+  color: inherit; 
+  transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+.table-light {
+  /* Header row in light mode */
+  --bs-table-bg: #f8fafc;
+  --bs-table-color: #111827;
+}
+
+.table > :not(caption) > * > * { /* cells */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  border-color: var(--bs-table-border-color) !important;
+}
+
+.table tbody tr { 
+  transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+.table-bordered { 
+  border: 1px solid var(--bs-table-border-color) !important; 
+}
+
+.table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Dark mode overrides */
+.dark-mode .table {
+  --bs-table-color: #e5e7eb;
+  --bs-table-bg: #232b3b;
+  --bs-table-border-color: rgba(255,255,255,0.12);
+  --bs-table-striped-bg: #1e2736;
+  --bs-table-hover-bg: #1a2233;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.28);
+}
+
+.dark-mode .table thead {
+  color: #e5e7eb;
+}
+
+.dark-mode .table thead.table-light { /* force dark header when thead has table-light */
+  background-color: #181e29 !important;
+  color: #e5e7eb !important;
+}
+
+.dark-mode .table thead.table-light th { 
+  background-color: inherit; 
+  color: inherit; 
+}
+
+.dark-mode .table-light {
+  /* Header row color in dark mode */
+  --bs-table-bg: #181e29 !important;
+  --bs-table-color: #e5e7eb !important;
+}
+
+.dark-mode .table, .dark-mode .form-section, .dark-mode .chart-card, .dark-mode .settings-card {
+  background: #232b3b !important;
+  color: #e5e7eb;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.16);
+  border: none;
+}
+
+.dark-mode .table-light, .dark-mode thead { 
+  background: #181e29 !important; 
+  color: #e5e7eb; 
+}
+
+.dark-mode .table-hover tbody tr:hover { 
+  background: #1a2233; 
+}
+
+.dark-mode .table tbody tr:hover {
+  background-color: #2d3748;
+}
+
+/* Absolute fallbacks with higher specificity in case variables are ignored */
+body.dark-mode table.table { 
+  background-color: #232b3b !important; 
+  color: #e5e7eb !important; 
+}
+
+body.dark-mode table.table thead { 
+  background-color: #181e29 !important; 
+  color: #e5e7eb !important; 
+}
+
+body.dark-mode table.table thead th { 
+  background-color: #181e29 !important; 
+  color: #e5e7eb !important; 
+}
+
+body.dark-mode table.table tbody td { 
+  background-color: #232b3b !important; 
+  color: #e5e7eb !important; 
+}
+
+body.dark-mode table.table tbody tr { 
+  background-color: #232b3b !important; 
+}
+
+body.dark-mode table.table tbody tr:hover { 
+  background-color: #1a2233 !important; 
+}
+
+/* subtle separators */
+body.dark-mode table.table > :not(caption) > * > * { 
+  border-color: rgba(255,255,255,0.06) !important; 
+}
+
+body.dark-mode table.table.table-bordered { 
+  border: 1px solid rgba(255,255,255,0.06) !important; 
+}
+
+body.dark-mode .table thead { 
+  border-color: rgba(255,255,255,0.06) !important; 
+}
+
+body.dark-mode .table thead tr { 
+  border-color: rgba(255,255,255,0.06) !important; 
+}
+
+body.dark-mode .table thead th { 
+  border-color: rgba(255,255,255,0.06) !important; 
+}

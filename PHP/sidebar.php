@@ -13,6 +13,10 @@
         <i class="bi bi-people"></i>
         <span>Students</span>
       </a>
+      <a class="sidebar-link<?php if($section=='subjects') echo ' active'; ?>" href="?section=subjects">
+        <i class="bi bi-book"></i>
+        <span>Subjects</span>
+      </a>
       <a class="sidebar-link<?php if($section=='grades') echo ' active'; ?>" href="?section=grades">
         <i class="bi bi-mortarboard"></i>
         <span>Grades</span>

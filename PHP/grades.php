@@ -1,5 +1,5 @@
 <?php /** @var array $students */ /** @var array $subjects */ /** @var array $grades */ ?>
-<div class="form-section">
+<div class="grades-form-container">
   <form action="update_grade.php" method="post" class="row g-3">
     <div class="col-md-3">
       <label class="form-label">Student</label>
@@ -28,9 +28,8 @@
     </div>
   </form>
 </div>
-<div class="card mt-4">
-  <div class="card-body">
-    <div class="table-responsive">
+<div class="grades-table-container">
+  <div class="table-responsive">
       <table class="table table-hover align-middle">
         <thead class="table-light">
           <tr>
@@ -46,27 +45,40 @@
         <tbody>
           <?php foreach ($grades as $g): ?>
           <tr>
-            <td><?= htmlspecialchars($g['name']) ?></td>
-            <td><?= htmlspecialchars($g['student_number']) ?></td>
-            <td><?= htmlspecialchars($g['subject_code']) ?></td>
+            <td><?= htmlspecialchars($g['student_name']) ?></td>
+            <td><span class="badge badge-purple"><?= htmlspecialchars($g['student_number']) ?></span></td>
+            <td><span class="badge badge-beige"><?= htmlspecialchars($g['subject_code']) ?></span></td>
             <td><?= htmlspecialchars($g['subject_title']) ?></td>
-            <td><?= htmlspecialchars($g['grade']) ?></td>
-            <td><?= htmlspecialchars($g['last_updated']) ?></td>
+            <?php
+              $gradeVal = is_numeric($g['grade']) ? (float)$g['grade'] : null;
+              if ($gradeVal !== null && $gradeVal >= 1.0 && $gradeVal <= 2.0) {
+                $badgeClass = 'badge-grade-green';
+              } elseif ($gradeVal !== null && $gradeVal > 2.0 && $gradeVal <= 2.9) {
+                $badgeClass = 'badge-grade-amber';
+              } else {
+                // Covers 3.0–5.0 and any other unexpected values
+                $badgeClass = 'badge-grade-red';
+              }
+            ?>
+            <td><span class="badge <?= $badgeClass ?>"><?= htmlspecialchars($g['grade']) ?></span></td>
             <td>
-              <button type="button" class="btn btn-sm btn-outline-danger remove-grade-btn" 
-                      data-grade-id="<?= htmlspecialchars($g['id']) ?>"
-                      data-student-name="<?= htmlspecialchars($g['name']) ?>"
-                      data-subject-title="<?= htmlspecialchars($g['subject_title']) ?>"
-                      title="Remove Grade">
-                <i class="bi bi-trash"></i>
-              </button>
+              <?php
+                $ts = strtotime($g['last_updated']);
+                echo $ts ? date('y/n/j H:i', $ts) : htmlspecialchars($g['last_updated']);
+              ?>
+            </td>
+            <td>
+              <i class="bi bi-dash-circle remove-grade-btn" 
+                 data-grade-id="<?= htmlspecialchars($g['id']) ?>"
+                 data-student-name="<?= htmlspecialchars($g['student_name']) ?>"
+                 data-subject-title="<?= htmlspecialchars($g['subject_title']) ?>"
+                 title="Remove Grade"></i>
             </td>
           </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
     </div>
-  </div>
 </div>
 
 <!-- Modern Confirmation Modal -->
@@ -74,9 +86,9 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="confirmDeleteModalLabel">
+        <h5 class="modal-title" id="confirmDeleteModalLabel" style="font-size: 0.95rem; font-weight: 600;">
           <i class="bi bi-exclamation-triangle text-warning me-2"></i>
-          Confirm Grade Removal
+          CONFIRM GRADE REMOVAL
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -92,11 +104,11 @@
         <p class="text-muted small mb-0">This action cannot be undone.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          <i class="bi bi-x-circle me-1"></i>Cancel
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+          Cancel
         </button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
-          <i class="bi bi-trash me-1"></i>Remove Grade
+        <button type="button" class="btn btn-danger btn-sm" id="confirmDeleteBtn" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+          Remove Grade
         </button>
       </div>
     </div>

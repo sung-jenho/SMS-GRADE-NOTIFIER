@@ -1,7 +1,13 @@
 <?php
+// Prevent any output before JSON
+ob_start();
+
 require_once 'queries.php';
 
+// Clear any previous output and set headers
+ob_clean();
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
 
 try {
     // Get SMS delivery statistics
@@ -18,6 +24,7 @@ try {
     echo json_encode($response);
 } catch (Exception $e) {
     // Return error response
+    http_response_code(500);
     echo json_encode([
         'success' => false,
         'error' => $e->getMessage(),
@@ -34,4 +41,4 @@ try {
         ]
     ]);
 }
-?>
+exit;

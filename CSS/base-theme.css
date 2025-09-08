@@ -1,0 +1,147 @@
+/* Base & Theme Styles */
+/* vestil-dashboard.css: Modern dashboard UI styles matching the reference */
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: linear-gradient(120deg, #f6f7fb 0%, #f3f6ff 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  color: #23272f;
+}
+
+/* Dark mode theme */
+.dark-mode {
+  background: linear-gradient(120deg, #181e29 0%, #232b3b 100%) !important;
+  color: #e5e7eb;
+}
+
+/* Sleek Minimalist Dark Mode Toggle */
+.sleek-theme-toggle {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sleek-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.sleek-theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.sleek-theme-toggle .theme-icon {
+  font-size: 18px;
+  color: #f59e0b;
+  transition: all 0.3s ease;
+}
+
+/* Dark mode styles */
+.dark-mode .sleek-theme-toggle {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .sleek-theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .sleek-theme-toggle .theme-icon {
+  color: #a78bfa;
+}
+
+.dark-mode .sleek-theme-toggle .theme-icon:before {
+  content: "\f497"; /* moon icon */
+}
+
+.sleek-theme-toggle .theme-icon:before {
+  content: "\f5a2"; /* sun icon */
+}
+
+/* Page navigation fade-out before redirect */
+.page-transition-out .dashboard-main { 
+  opacity: 0; 
+  transform: translateY(8px); 
+  filter: blur(1px); 
+}
+
+/* Dashboard main container */
+.dashboard-main {
+  margin-top: 36px;
+  padding: 0 0 0 0;
+  max-width: 100vw;
+  transition: opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 0.2rem;
+  margin-left: 8vw;
+}
+
+.dashboard-header h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #23272f;
+}
+ 
+.dashboard-main > p {
+  margin-left: 8vw;
+  color: #7c88a4;
+  font-size: 0.95rem;
+}
+
+/* Dark mode overrides */
+.dark-mode .dashboard-header h2 {
+  color: #f1f5f9;
+}
+
+.dark-mode .dashboard-header .text-secondary {
+  color: #94a3b8;
+}
+
+/* Enhanced dashboard header */
+.dashboard-header {
+  margin-bottom: 2rem;
+  padding: 0 0.5rem;
+}
+
+.dashboard-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.025em;
+}
+
+.dashboard-header .text-secondary {
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* Ensure muted text remains readable in dark mode */
+.dark-mode .text-muted {
+  color: #9ca3af !important;
+}
+
+.dark-mode .text-secondary { 
+  color: #9ca3af !important; 
+}
+
+/* Override Bootstrap's small class for chart subtitles */
+.text-muted.small {
+  font-size: 0.70rem !important;
+}

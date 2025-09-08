@@ -30,29 +30,14 @@ $action = $_POST['action'] ?? '';
 try {
     $mysqli = get_db_connection();
     
-    if ($action === 'clear_test') {
-        // Clear only test data based on patterns
-        $success = clear_test_sms_logs();
-        
-        if ($success) {
-            // Get count of remaining logs
-            $count_result = $mysqli->query('SELECT COUNT(*) as count FROM sms_logs');
-            $remaining_count = $count_result ? $count_result->fetch_assoc()['count'] : 0;
-            
-            echo json_encode([
-                'success' => true, 
-                'message' => 'Test SMS logs removed successfully',
-                'remaining_logs' => $remaining_count
-            ]);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to remove test SMS logs']);
-        }
-        
-    } elseif ($action === 'clear_all') {
+    if ($action === 'clear_all') {
         // Clear all SMS logs
         $success = clear_all_sms_logs();
         
         if ($success) {
+            $count_result = $mysqli->query('SELECT COUNT(*) as count FROM sms_logs');
+            $remaining_count = $count_result ? $count_result->fetch_assoc()['count'] : 0;
+            
             echo json_encode([
                 'success' => true, 
                 'message' => 'All SMS logs removed successfully'

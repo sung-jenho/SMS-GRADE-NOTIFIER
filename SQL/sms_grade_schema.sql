@@ -15,7 +15,8 @@ CREATE TABLE students (
     name VARCHAR(100) NOT NULL,
     course VARCHAR(20),
     year_level INT,
-    phone_number VARCHAR(20) NOT NULL
+    phone_number VARCHAR(20) NOT NULL,
+    photo VARCHAR(255) DEFAULT NULL
 );
 
 CREATE TABLE subjects (
