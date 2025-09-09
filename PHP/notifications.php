@@ -45,11 +45,17 @@
               ?>
               <tr>
                 <td><?= htmlspecialchars($log['student_name']) ?></td>
-                <td class="text-secondary"><?= htmlspecialchars($log['parent_phone']) ?></td>
+                <td>
+                  <span class="badge badge-red">
+                    <i class="bi bi-telephone me-1"></i><?= htmlspecialchars($log['parent_phone']) ?>
+                  </span>
+                </td>
                 <td><?= htmlspecialchars($log['subject_title']) ?></td>
                 <td><span class="badge <?= $gradeBadge ?>"><?= htmlspecialchars($log['grade_snapshot']) ?></span></td>
                 <td><span class="status-pill <?= $pillClass ?>"><?= htmlspecialchars($status) ?></span></td>
-                <td class="text-secondary"><?= htmlspecialchars($shortTs) ?></td>
+                <td>
+                  <span class="badge badge-skyblue"><?= htmlspecialchars($shortTs) ?></span>
+                </td>
                 <td>
                   <?php if ($status === 'Pending'): ?>
                     <i class="bi bi-send send-sms-btn me-2" 

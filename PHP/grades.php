@@ -62,10 +62,12 @@
             ?>
             <td><span class="badge <?= $badgeClass ?>"><?= htmlspecialchars($g['grade']) ?></span></td>
             <td>
-              <?php
-                $ts = strtotime($g['last_updated']);
-                echo $ts ? date('y/n/j H:i', $ts) : htmlspecialchars($g['last_updated']);
-              ?>
+              <span class="badge badge-cream">
+                <?php
+                  $ts = strtotime($g['last_updated']);
+                  echo $ts ? date('y/n/j H:i', $ts) : htmlspecialchars($g['last_updated']);
+                ?>
+              </span>
             </td>
             <td>
               <i class="bi bi-dash-circle remove-grade-btn" 

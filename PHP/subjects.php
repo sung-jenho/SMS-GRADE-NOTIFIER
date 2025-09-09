@@ -86,7 +86,7 @@
                 </td>
                 <td>
                   <?php if ($subject['schedule']): ?>
-                    <?= htmlspecialchars($subject['schedule']) ?>
+                    <span class="badge badge-skyblue"><?= htmlspecialchars($subject['schedule']) ?></span>
                   <?php else: ?>
                     <span class="text-muted">-</span>
                   <?php endif; ?>
@@ -100,7 +100,7 @@
                 </td>
                 <td>
                   <?php if ($subject['room']): ?>
-                    <?= htmlspecialchars($subject['room']) ?>
+                    <span class="badge badge-maroon"><?= htmlspecialchars($subject['room']) ?></span>
                   <?php else: ?>
                     <span class="text-muted">-</span>
                   <?php endif; ?>

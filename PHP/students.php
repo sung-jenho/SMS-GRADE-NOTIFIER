@@ -89,13 +89,15 @@
               <td>
                 <span class="badge badge-purple"><?= htmlspecialchars($s['student_number']) ?></span>
               </td>
-              <td><?= htmlspecialchars($s['course'] ?? 'N/A') ?></td>
+              <td>
+                <span class="badge badge-yellow"><?= htmlspecialchars($s['course'] ?? 'N/A') ?></span>
+              </td>
               <td>
                 <span class="badge bg-info"><?= htmlspecialchars($s['year_level'] ?? 'N/A') ?> Year</span>
               </td>
               <td>
-                <span class="text-body">
-                  <i class="bi bi-telephone me-1 text-secondary"></i><?= htmlspecialchars($s['phone_number']) ?>
+                <span class="badge badge-red">
+                  <i class="bi bi-telephone me-1"></i><?= htmlspecialchars($s['phone_number']) ?>
                 </span>
               </td>
               <td>
