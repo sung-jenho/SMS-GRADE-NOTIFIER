@@ -2,27 +2,21 @@
 <div class="row g-4 mb-4 metric-row">
     <div class="col-md-6">
         <a class="card-metric has-right-anim d-block text-decoration-none" href="?section=students" aria-label="Go to Students section">
-            <div class="d-flex align-items-center">
-                <span class="metric-value"><span class="metric-pill pill-green"><?= number_format(count($students)) ?></span></span>
-                <div class="metric-text-group ms-3">
-                    <span class="metric-label">TOTAL STUDENTS</span>
-                    <span class="metric-subtitle">Total students added in this system.</span>
-                </div>
+            <div class="metric-text-group">
+                <span class="metric-label">TOTAL STUDENTS</span>
+                <span class="metric-subtitle">Total students added in this system.</span>
             </div>
-            <span class="metric-change">+12</span>
+            <span class="metric-change">+<?= number_format(count($students)) ?></span>
             <span id="studentsLottie" class="lottie-right" aria-hidden="true"></span>
         </a>
     </div>
     <div class="col-md-6">
         <a class="card-metric has-right-anim d-block text-decoration-none" href="?section=notifications" aria-label="Go to SMS Logs section">
-            <div class="d-flex align-items-center">
-                <span class="metric-value"><span class="metric-pill pill-red"><?= number_format($sms_tasks_count) ?></span></span>
-                <div class="metric-text-group ms-3">
-                    <span class="metric-label">SMS GRADE TASKS</span>
-                    <span class="metric-subtitle">Actual SMS Logs computed.</span>
-                </div>
+            <div class="metric-text-group">
+                <span class="metric-label">SMS GRADE TASKS</span>
+                <span class="metric-subtitle">Actual SMS Logs computed.</span>
             </div>
-            <span class="metric-change <?= strpos($sms_tasks_change, '+') === 0 ? 'green' : (strpos($sms_tasks_change, '-') === 0 ? 'red' : '') ?>"><?= $sms_tasks_change ?></span>
+            <span class="metric-change <?= strpos($sms_tasks_change, '+') === 0 ? 'green' : (strpos($sms_tasks_change, '-') === 0 ? 'red' : '') ?>">+<?= number_format($sms_tasks_count) ?></span>
             <span id="smsLottie" class="lottie-right" aria-hidden="true"></span>
         </a>
     </div>

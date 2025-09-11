@@ -18,6 +18,7 @@
  * All functionality has been properly separated for better maintainability.
  */
 
+@import url('fonts.css');
 @import url('bootstrap-icons-fix.css');
 @import url('base-theme.css');
 @import url('header-navigation.css');

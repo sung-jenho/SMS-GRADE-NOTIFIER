@@ -4,10 +4,10 @@
     <button class="header-action-btn menu-btn" type="button" aria-label="Open menu" data-bs-toggle="offcanvas" data-bs-target="#mainSidebar" aria-controls="mainSidebar">
       <span class="bi bi-list"></span>
     </button>
-    <div class="header-logo"><img src="../assets/ctu-logo.png" alt="CTU Logo" class="header-logo-img"></div>
+    <div class="header-logo"><div id="beeLottie" class="bee-lottie" style="width:80px;height:80px;"></div></div>
     <div class="header-title-group">
       <div class="header-title-row">
-        <div class="header-title">CROZONO</div>
+        <div class="header-title">BUZZTED</div>
       </div>
       
     </div>

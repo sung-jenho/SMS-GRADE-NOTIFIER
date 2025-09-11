@@ -381,3 +381,179 @@
   border-color: #64748b;
   color: #e2e8f0;
 }
+
+/* Edit Student Modal Styling */
+#editStudentModal .modal-content {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+#editStudentModal .modal-header {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border-bottom: 1px solid #60a5fa;
+  padding: 20px 24px;
+}
+
+#editStudentModal .modal-title {
+  color: #1e3a8a;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+#editStudentModal .modal-body {
+  padding: 24px;
+  background: #fff;
+}
+
+#editStudentModal .modal-footer {
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 16px 24px;
+  gap: 12px;
+}
+
+#editStudentModal .form-label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+}
+
+#editStudentModal .form-control,
+#editStudentModal .form-select {
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  color: #374151;
+}
+
+#editStudentModal .form-control:focus,
+#editStudentModal .form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  outline: none;
+}
+
+#editStudentModal .btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 10px 20px;
+}
+
+#editStudentModal .btn-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+#editStudentModal .btn-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+#editStudentModal .btn-secondary {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+}
+
+#editStudentModal .btn-secondary:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  color: #334155;
+}
+
+/* Dark mode for Edit Student modal */
+.dark-mode #editStudentModal .modal-content {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.dark-mode #editStudentModal .modal-header {
+  background: linear-gradient(135deg, #0b1b3a 0%, #0f2859 100%);
+  border-bottom-color: #2563eb;
+}
+
+.dark-mode #editStudentModal .modal-title {
+  color: #93c5fd;
+}
+
+.dark-mode #editStudentModal .modal-body { 
+  background: #1e293b; 
+  color: #e2e8f0; 
+}
+
+.dark-mode #editStudentModal .modal-footer { 
+  background: #0f172a; 
+  border-top-color: #334155; 
+}
+
+.dark-mode #editStudentModal .form-label {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.dark-mode #editStudentModal .form-control,
+.dark-mode #editStudentModal .form-select {
+  background: #334155;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+.dark-mode #editStudentModal .form-control:focus,
+.dark-mode #editStudentModal .form-select:focus {
+  background: #475569;
+  border-color: #3b82f6;
+  color: #e2e8f0;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.dark-mode #editStudentModal .form-control::placeholder {
+  color: #9ca3af;
+}
+
+.dark-mode #editStudentModal .btn-secondary { 
+  background: #334155; 
+  border-color: #475569; 
+  color: #cbd5e1; 
+}
+
+.dark-mode #editStudentModal .btn-secondary:hover { 
+  background: #475569; 
+  border-color: #64748b; 
+  color: #e2e8f0; 
+}
+
+/* File input styling for photo upload */
+#editStudentModal .form-control[type="file"] {
+  padding: 8px 12px;
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+}
+
+.dark-mode #editStudentModal .form-control[type="file"] {
+  background: #374151;
+  border-color: #6b7280;
+  color: #d1d5db;
+}
+
+/* Photo preview styling */
+#editStudentModal .current-photo {
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+  margin-top: 8px;
+}
+
+.dark-mode #editStudentModal .current-photo {
+  border-color: #475569;
+}

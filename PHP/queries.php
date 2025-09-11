@@ -18,12 +18,12 @@ function find_user_by_username(string $username): ?array {
 
 function fetch_students(): array {
     $mysqli = get_db_connection();
-    $result = $mysqli->query('SELECT * FROM students ORDER BY name ASC');
+    $result = $mysqli->query('SELECT id, student_number, name, course, year_level, phone_number, photo FROM students ORDER BY name ASC');
     return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
 }
 
 
-function create_student(string $studentNumber, string $name, string $course, int $yearLevel, string $phoneNumber): bool {
+function create_student(string $studentNumber, string $name, string $course, int $yearLevel, string $phoneNumber, ?string $photo = null): bool {
     $mysqli = get_db_connection();
     
     // Check if student number already exists
@@ -39,17 +39,17 @@ function create_student(string $studentNumber, string $name, string $course, int
     $check_stmt->close();
     
     // Insert new student
-    $stmt = $mysqli->prepare('INSERT INTO students (student_number, name, course, year_level, phone_number) VALUES (?, ?, ?, ?, ?)');
+    $stmt = $mysqli->prepare('INSERT INTO students (student_number, name, course, year_level, phone_number, photo) VALUES (?, ?, ?, ?, ?, ?)');
     if (!$stmt) {
         return false;
     }
-    $stmt->bind_param('sssis', $studentNumber, $name, $course, $yearLevel, $phoneNumber);
+    $stmt->bind_param('sssiss', $studentNumber, $name, $course, $yearLevel, $phoneNumber, $photo);
     $ok = $stmt->execute();
     $stmt->close();
     return $ok;
 }
 
-function update_student(int $studentId, string $studentNumber, string $name, string $course, int $yearLevel, string $phoneNumber): bool {
+function update_student(int $studentId, string $studentNumber, string $name, string $course, int $yearLevel, string $phoneNumber, ?string $photo = null): bool {
     $mysqli = get_db_connection();
     
     // Check if student number already exists for other students
@@ -65,11 +65,19 @@ function update_student(int $studentId, string $studentNumber, string $name, str
     $check_stmt->close();
     
     // Update student
-    $stmt = $mysqli->prepare('UPDATE students SET student_number = ?, name = ?, course = ?, year_level = ?, phone_number = ? WHERE id = ?');
-    if (!$stmt) {
-        return false;
+    if ($photo !== null) {
+        $stmt = $mysqli->prepare('UPDATE students SET student_number = ?, name = ?, course = ?, year_level = ?, phone_number = ?, photo = ? WHERE id = ?');
+        if (!$stmt) {
+            return false;
+        }
+        $stmt->bind_param('sssissi', $studentNumber, $name, $course, $yearLevel, $phoneNumber, $photo, $studentId);
+    } else {
+        $stmt = $mysqli->prepare('UPDATE students SET student_number = ?, name = ?, course = ?, year_level = ?, phone_number = ? WHERE id = ?');
+        if (!$stmt) {
+            return false;
+        }
+        $stmt->bind_param('sssisi', $studentNumber, $name, $course, $yearLevel, $phoneNumber, $studentId);
     }
-    $stmt->bind_param('sssisi', $studentNumber, $name, $course, $yearLevel, $phoneNumber, $studentId);
     $ok = $stmt->execute();
     $stmt->close();
     return $ok;

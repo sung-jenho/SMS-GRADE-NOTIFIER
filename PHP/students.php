@@ -8,7 +8,7 @@
 
 <!-- Add Student Form -->
 <div class="students-form-container">
-    <form id="addStudentForm" class="row g-3">
+    <form id="addStudentForm" class="row g-3" enctype="multipart/form-data">
       <div class="col-md-6">
         <label for="student_number" class="form-label">Student Number <span class="text-danger">*</span></label>
         <input type="text" class="form-control" id="student_number" name="student_number" required 
@@ -43,6 +43,11 @@
         <div class="form-text">Parent's or student's contact number</div>
       </div>
       <div class="col-12">
+        <label for="photo" class="form-label">Student Photo</label>
+        <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+        <div class="form-text">Upload a photo for the student (optional). Supported formats: JPG, PNG, GIF</div>
+      </div>
+      <div class="col-12">
         <button type="submit" class="btn btn-primary">
           <i class="bi bi-person-plus"></i> Add Student
         </button>
@@ -56,7 +61,7 @@
 <!-- Students Table -->
 <div class="students-table-container">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <h5 class="mb-0">Student List</h5>
+    <h5 class="mb-0">STUDENT LIST</h5>
     <span class="badge bg-primary"><?= count($students) ?> students</span>
   </div>
   <div class="card-body">
@@ -78,9 +83,19 @@
             <tr>
               <td>
                 <div class="d-flex align-items-center">
-                  <div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
-                    <?= strtoupper(substr($s['name'], 0, 1)) ?>
-                  </div>
+                  <?php if (!empty($s['photo']) && file_exists('../uploads/students/' . $s['photo'])): ?>
+                    <img src="../uploads/students/<?= htmlspecialchars($s['photo']) ?>" 
+                         alt="<?= htmlspecialchars($s['name']) ?>" 
+                         class="avatar-sm rounded-circle me-3 student-photo-clickable" 
+                         style="width: 40px; height: 40px; object-fit: cover; cursor: pointer;"
+                         data-photo="../uploads/students/<?= htmlspecialchars($s['photo']) ?>"
+                         data-student-name="<?= htmlspecialchars($s['name']) ?>"
+                         onclick="openPhotoModal(this)">
+                  <?php else: ?>
+                    <div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
+                      <?= strtoupper(substr($s['name'], 0, 1)) ?>
+                    </div>
+                  <?php endif; ?>
                   <div>
                     <div class="fw-semibold"><?= htmlspecialchars($s['name']) ?></div>
                   </div>
@@ -110,6 +125,7 @@
                      data-course="<?= htmlspecialchars($s['course'] ?? '') ?>"
                      data-year-level="<?= htmlspecialchars($s['year_level'] ?? '') ?>"
                      data-phone-number="<?= htmlspecialchars($s['phone_number']) ?>"
+                     data-photo="<?= htmlspecialchars($s['photo'] ?? '') ?>"
                      title="Edit Student"></i>
                   <i class="bi bi-dash-circle delete-student-btn" 
                      role="button"
@@ -144,7 +160,7 @@
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form id="editStudentForm">
+      <form id="editStudentForm" enctype="multipart/form-data">
         <div class="modal-body">
           <input type="hidden" id="edit_student_id" name="student_id">
           <div class="row g-3">
@@ -175,6 +191,15 @@
               <label for="edit_phone_number" class="form-label">Phone Number <span class="text-danger">*</span></label>
               <input type="tel" class="form-control" id="edit_phone_number" name="phone_number" required maxlength="20">
             </div>
+            <div class="col-12">
+              <label for="edit_photo" class="form-label">Student Photo</label>
+              <input type="file" class="form-control" id="edit_photo" name="photo" accept="image/*">
+              <div class="form-text">Upload a new photo to replace the current one (optional)</div>
+              <div id="currentPhotoPreview" class="mt-2" style="display: none;">
+                <small class="text-muted">Current photo:</small><br>
+                <img id="currentPhotoImg" src="" alt="Current photo" class="rounded" style="max-width: 100px; max-height: 100px; object-fit: cover;">
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -188,6 +213,13 @@
       </form>
     </div>
   </div>
+</div>
+
+<!-- Loading Animation Overlay for Students -->
+<div id="studentLoadingOverlay" class="loading-overlay">
+    <div id="studentLoadingAnimation" class="loading-animation"></div>
+    <div class="loading-text">Adding Student<span class="loading-dots"></span></div>
+    <div class="loading-subtext">Please wait while we process the student information</div>
 </div>
 
 <!-- Delete Confirmation Modal -->
@@ -227,5 +259,27 @@
     </div>
   </div>
 </div>
+
+<!-- Photo Zoom Modal -->
+<div class="modal fade" id="photoZoomModal" tabindex="-1" aria-labelledby="photoZoomModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body text-center p-0">
+        <img id="zoomedPhoto" src="" alt="Student Photo" class="img-fluid rounded shadow-lg" style="max-height: 70vh; max-width: 100%; object-fit: contain;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openPhotoModal(imgElement) {
+  const photoSrc = imgElement.dataset.photo;
+  
+  document.getElementById('zoomedPhoto').src = photoSrc;
+  
+  const modal = new bootstrap.Modal(document.getElementById('photoZoomModal'));
+  modal.show();
+}
+</script>
 
 

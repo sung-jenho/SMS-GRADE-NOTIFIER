@@ -49,6 +49,16 @@ try {
         $yearLevel = (int)$_POST['year_level'];
         $phoneNumber = trim($_POST['phone_number']);
         
+        // Handle photo upload
+        $photoFileName = null;
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            $photoFileName = handlePhotoUpload($_FILES['photo']);
+            if ($photoFileName === false) {
+                echo json_encode(['success' => false, 'message' => 'Failed to upload photo']);
+                exit;
+            }
+        }
+        
         // Validate year level
         if ($yearLevel < 1 || $yearLevel > 10) {
             echo json_encode(['success' => false, 'message' => 'Year level must be between 1 and 10']);
@@ -60,7 +70,7 @@ try {
             echo json_encode(['success' => false, 'message' => 'Invalid phone number format']);
             exit;
         }
-        $success = create_student($studentNumber, $name, $course, $yearLevel, $phoneNumber);
+        $success = create_student($studentNumber, $name, $course, $yearLevel, $phoneNumber, $photoFileName);
         
         if ($success) {
             echo json_encode(['success' => true, 'message' => 'Student added successfully']);
@@ -95,6 +105,16 @@ try {
         $yearLevel = (int)$_POST['year_level'];
         $phoneNumber = trim($_POST['phone_number']);
         
+        // Handle photo upload
+        $photoFileName = null;
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            $photoFileName = handlePhotoUpload($_FILES['photo']);
+            if ($photoFileName === false) {
+                echo json_encode(['success' => false, 'message' => 'Failed to upload photo']);
+                exit;
+            }
+        }
+        
         // Validate year level
         if ($yearLevel < 1 || $yearLevel > 10) {
             echo json_encode(['success' => false, 'message' => 'Year level must be between 1 and 10']);
@@ -107,7 +127,7 @@ try {
             exit;
         }
         
-        $success = update_student($studentId, $studentNumber, $name, $course, $yearLevel, $phoneNumber);
+        $success = update_student($studentId, $studentNumber, $name, $course, $yearLevel, $phoneNumber, $photoFileName);
         
         if ($success) {
             echo json_encode(['success' => true, 'message' => 'Student updated successfully']);
@@ -139,5 +159,40 @@ try {
     error_log("Database error managing student: " . $e->getMessage());
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+}
+
+/**
+ * Handle photo upload and return filename or false on failure
+ */
+function handlePhotoUpload($file): string|false {
+    // Check if uploads directory exists
+    $uploadDir = __DIR__ . '/../uploads/students/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+    
+    // Validate file type
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    $fileType = $file['type'];
+    if (!in_array($fileType, $allowedTypes)) {
+        return false;
+    }
+    
+    // Validate file size (max 5MB)
+    if ($file['size'] > 5 * 1024 * 1024) {
+        return false;
+    }
+    
+    // Generate unique filename
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $fileName = uniqid('student_', true) . '.' . $extension;
+    $filePath = $uploadDir . $fileName;
+    
+    // Move uploaded file
+    if (move_uploaded_file($file['tmp_name'], $filePath)) {
+        return $fileName;
+    }
+    
+    return false;
 }
 ?>

@@ -27,8 +27,12 @@
       </div>
       <div class="col-md-4">
         <label for="schedule" class="form-label">Schedule</label>
-        <input type="text" class="form-control" id="schedule" name="schedule" 
-               placeholder="e.g., 8:00-9:00 AM" maxlength="50">
+        <div class="d-flex gap-2 align-items-center">
+          <input type="time" class="form-control" id="start_time" name="start_time" style="flex: 1;">
+          <span class="text-muted">to</span>
+          <input type="time" class="form-control" id="end_time" name="end_time" style="flex: 1;">
+        </div>
+        <input type="hidden" id="schedule" name="schedule">
       </div>
       <div class="col-md-2">
         <label for="days" class="form-label">Days</label>
@@ -181,7 +185,12 @@
           </div>
           <div class="col-md-4">
             <label for="editSchedule" class="form-label">Schedule</label>
-            <input type="text" class="form-control" id="editSchedule" name="schedule" maxlength="50">
+            <div class="d-flex gap-2 align-items-center">
+              <input type="time" class="form-control" id="editStartTime" name="start_time" style="flex: 1;">
+              <span class="text-muted">to</span>
+              <input type="time" class="form-control" id="editEndTime" name="end_time" style="flex: 1;">
+            </div>
+            <input type="hidden" id="editSchedule" name="schedule">
           </div>
           <div class="col-md-2">
             <label for="editDays" class="form-label">Days</label>
@@ -203,6 +212,13 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- Loading Animation Overlay for Subjects -->
+<div id="subjectLoadingOverlay" class="loading-overlay">
+    <div id="subjectLoadingAnimation" class="loading-animation"></div>
+    <div class="loading-text">Adding Subject<span class="loading-dots"></span></div>
+    <div class="loading-subtext">Please wait while we process the subject information</div>
 </div>
 
 <!-- Delete Subject Modal -->
@@ -251,6 +267,22 @@ document.addEventListener('DOMContentLoaded', function() {
   const confirmDeleteSubjectBtn = document.getElementById('confirmDeleteSubjectBtn');
   
   window.currentDeleteId = null;
+  let subjectLoadingAnimation = null;
+  
+  // Initialize Lottie loading animation for subjects
+  try {
+    if (window.lottie) {
+      subjectLoadingAnimation = window.lottie.loadAnimation({
+        container: document.getElementById('subjectLoadingAnimation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: '../assets/loading.json'
+      });
+    }
+  } catch (e) {
+    console.log('Lottie animation not available');
+  }
   
   // Toast functions
   function showToast(type, message) {
@@ -262,45 +294,124 @@ document.addEventListener('DOMContentLoaded', function() {
     toast.show();
   }
   
+  // Function to format time to 12-hour format with AM/PM
+  function formatTime12Hour(time24) {
+    if (!time24) return '';
+    const [hours, minutes] = time24.split(':');
+    const hour12 = hours % 12 || 12;
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    return `${hour12}:${minutes} ${ampm}`;
+  }
+
+  // Function to convert 12-hour format back to 24-hour
+  function convertTo24Hour(time12) {
+    if (!time12) return '';
+    const match = time12.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+    if (!match) return time12;
+    
+    let [, hours, minutes, ampm] = match;
+    hours = parseInt(hours);
+    if (ampm.toUpperCase() === 'PM' && hours !== 12) hours += 12;
+    if (ampm.toUpperCase() === 'AM' && hours === 12) hours = 0;
+    
+    return `${hours.toString().padStart(2, '0')}:${minutes}`;
+  }
+
+  // Function to combine start and end times into schedule format
+  function combineSchedule() {
+    const startTime = document.getElementById('start_time').value;
+    const endTime = document.getElementById('end_time').value;
+    
+    if (startTime && endTime) {
+      const startFormatted = formatTime12Hour(startTime);
+      const endFormatted = formatTime12Hour(endTime);
+      const schedule = `${startFormatted}-${endFormatted}`;
+      document.getElementById('schedule').value = schedule;
+    }
+  }
+
+  // Function to combine edit schedule times
+  function combineEditSchedule() {
+    const startTime = document.getElementById('editStartTime').value;
+    const endTime = document.getElementById('editEndTime').value;
+    
+    if (startTime && endTime) {
+      const startFormatted = formatTime12Hour(startTime);
+      const endFormatted = formatTime12Hour(endTime);
+      const schedule = `${startFormatted}-${endFormatted}`;
+      document.getElementById('editSchedule').value = schedule;
+    }
+  }
+
+  // Add event listeners for time inputs
+  document.getElementById('start_time').addEventListener('change', combineSchedule);
+  document.getElementById('end_time').addEventListener('change', combineSchedule);
+  document.getElementById('editStartTime').addEventListener('change', combineEditSchedule);
+  document.getElementById('editEndTime').addEventListener('change', combineEditSchedule);
+
   // Add Subject Form
   if (addSubjectForm) {
     addSubjectForm.addEventListener('submit', function(e) {
       e.preventDefault();
       
+      // Combine schedule before submitting
+      combineSchedule();
+      
       const formData = new FormData(this);
       const submitBtn = this.querySelector('button[type="submit"]');
+      const loadingOverlay = document.getElementById('subjectLoadingOverlay');
+      
+      // Show loading overlay immediately
+      loadingOverlay.classList.add('show');
+      
+      // Start loading animation
+      if (subjectLoadingAnimation) {
+        subjectLoadingAnimation.play();
+      }
       
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Adding...';
+      submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Adding Subject...';
       
-      fetch('/VESTIL/PHP/manage_subject.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          showToast('success', 'Subject added successfully!');
-          this.reset();
-          setTimeout(() => location.reload(), 1500);
-        } else {
-          showToast('error', data.message || 'Failed to add subject');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        showToast('error', 'An error occurred while adding the subject');
-      })
-      .finally(() => {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Add Subject';
-      });
+      // Force exactly 3 seconds delay before processing
+      setTimeout(() => {
+        fetch('/VESTIL/PHP/manage_subject.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            showToast('success', 'Subject added successfully!');
+            this.reset();
+            setTimeout(() => location.reload(), 1500);
+          } else {
+            showToast('error', data.message || 'Failed to add subject');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          showToast('error', 'An error occurred while adding the subject');
+        })
+        .finally(() => {
+          // Hide loading overlay
+          loadingOverlay.classList.remove('show');
+          if (subjectLoadingAnimation) {
+            subjectLoadingAnimation.stop();
+          }
+          
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Add Subject';
+        });
+      }, 3000); // Exactly 3 seconds delay
     });
   }
   
   // Save Edit Subject
   if (saveEditSubjectBtn) {
     saveEditSubjectBtn.addEventListener('click', function() {
+      // Combine edit schedule before submitting
+      combineEditSchedule();
+      
       const formData = new FormData(editSubjectForm);
       formData.append('action', 'edit');
       
@@ -395,8 +506,28 @@ function editSubject(id) {
     document.getElementById('editUnits').value = '';
   }
   
-  // Handle other fields
-  document.getElementById('editSchedule').value = cells[3].textContent.trim() === '-' ? '' : cells[3].textContent.trim();
+  // Handle schedule field - parse existing schedule and populate time inputs
+  const scheduleText = cells[3].textContent.trim();
+  if (scheduleText !== '-') {
+    // Try to parse schedule like "8:00 AM-9:00 AM" or "8:00-9:00 AM"
+    const scheduleMatch = scheduleText.match(/(\d{1,2}:\d{2})\s*(AM|PM)?\s*-\s*(\d{1,2}:\d{2})\s*(AM|PM)/i);
+    if (scheduleMatch) {
+      const [, startTime, startAmPm, endTime, endAmPm] = scheduleMatch;
+      
+      // Convert to 24-hour format for time inputs
+      const start24 = convertTo24Hour(`${startTime} ${startAmPm || endAmPm}`);
+      const end24 = convertTo24Hour(`${endTime} ${endAmPm}`);
+      
+      document.getElementById('editStartTime').value = start24;
+      document.getElementById('editEndTime').value = end24;
+    }
+    document.getElementById('editSchedule').value = scheduleText;
+  } else {
+    document.getElementById('editStartTime').value = '';
+    document.getElementById('editEndTime').value = '';
+    document.getElementById('editSchedule').value = '';
+  }
+  
   document.getElementById('editDays').value = cells[4].textContent.trim() === '-' ? '' : cells[4].textContent.trim();
   document.getElementById('editRoom').value = cells[5].textContent.trim() === '-' ? '' : cells[5].textContent.trim();
   

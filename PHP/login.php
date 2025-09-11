@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!-- Left Section - Login Form -->
         <div class="login-form-section">
             <div class="login-header">
-                <div id="heyLottie" class="lottie-hey" aria-hidden="true"></div>
+                <div id="heyLottie" class="lottie-hey mx-auto mb-3" aria-hidden="true" style="width: 140px; height: 140px;"></div>
                 <p class="welcome-subtitle">Please enter your details to access the system</p>
             </div>
 
@@ -100,6 +100,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="illustration-section">
         </div>
 
+    </div>
+
+    <!-- Loading Animation Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div id="loadingAnimation" class="loading-animation"></div>
+        <div class="loading-text">Authenticating<span class="loading-dots"></span></div>
+        <div class="loading-subtext">Please wait while we verify your credentials</div>
     </div>
 
     <script src="../JAVASCRIPTS/login.js"></script>

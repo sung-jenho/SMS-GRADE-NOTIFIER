@@ -1,0 +1,34 @@
+/* Meriva Font Implementation for BUZZTED Title */
+
+@font-face {
+    font-family: 'Meriva';
+    src: url('../assets/meriva.woff2') format('woff2'),
+         url('../assets/meriva.woff') format('woff'),
+         url('../assets/meriva.ttf') format('truetype'),
+         url('../assets/meriva.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Apply Meriva font to BUZZTED title */
+.header-title {
+    font-family: 'Meriva', 'Inter', sans-serif !important;
+    font-weight: 300 !important;
+    letter-spacing: 0.06em !important;
+    font-size: 1.0rem !important;
+}
+
+/* Dark mode support for Meriva title */
+.dark-mode .header-title {
+    font-family: 'Meriva', 'Inter', sans-serif !important;
+    font-weight: 300 !important;
+}
+
+/* Fallback for browsers that don't support the font */
+@supports not (font-family: 'Meriva') {
+    .header-title {
+        font-family: 'Inter', sans-serif;
+        font-weight: 300;
+    }
+}
