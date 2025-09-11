@@ -511,6 +511,22 @@ function update_subject(int $subject_id, string $subject_code, string $subject_t
   }
 }
 
+function get_subject_by_id(int $subject_id): ?array {
+  $mysqli = get_db_connection();
+  
+  try {
+    $stmt = $mysqli->prepare("SELECT id, subject_code, subject_title, units, schedule, days, room FROM subjects WHERE id = ?");
+    $stmt->bind_param("i", $subject_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $subject = $result->fetch_assoc();
+    $stmt->close();
+    return $subject ?: null;
+  } catch (mysqli_sql_exception $e) {
+    return null;
+  }
+}
+
 function delete_subject(int $subject_id): bool {
   $mysqli = get_db_connection();
   

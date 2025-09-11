@@ -488,51 +488,52 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function editSubject(id) {
-  // Find subject data from the table
-  const row = document.querySelector(`i[onclick="editSubject(${id})"]`).closest('tr');
-  const cells = row.querySelectorAll('td');
-  
-  // Populate modal form
-  document.getElementById('editSubjectId').value = id;
-  document.getElementById('editSubjectCode').value = cells[0].textContent.trim();
-  document.getElementById('editSubjectTitle').value = cells[1].textContent.trim();
-  
-  // Handle units (extract number from badge)
-  const unitsText = cells[2].textContent.trim();
-  if (unitsText !== '-') {
-    const unitsMatch = unitsText.match(/(\d+)/);
-    document.getElementById('editUnits').value = unitsMatch ? unitsMatch[1] : '';
-  } else {
-    document.getElementById('editUnits').value = '';
-  }
-  
-  // Handle schedule field - parse existing schedule and populate time inputs
-  const scheduleText = cells[3].textContent.trim();
-  if (scheduleText !== '-') {
-    // Try to parse schedule like "8:00 AM-9:00 AM" or "8:00-9:00 AM"
-    const scheduleMatch = scheduleText.match(/(\d{1,2}:\d{2})\s*(AM|PM)?\s*-\s*(\d{1,2}:\d{2})\s*(AM|PM)/i);
-    if (scheduleMatch) {
-      const [, startTime, startAmPm, endTime, endAmPm] = scheduleMatch;
-      
-      // Convert to 24-hour format for time inputs
-      const start24 = convertTo24Hour(`${startTime} ${startAmPm || endAmPm}`);
-      const end24 = convertTo24Hour(`${endTime} ${endAmPm}`);
-      
-      document.getElementById('editStartTime').value = start24;
-      document.getElementById('editEndTime').value = end24;
-    }
-    document.getElementById('editSchedule').value = scheduleText;
-  } else {
-    document.getElementById('editStartTime').value = '';
-    document.getElementById('editEndTime').value = '';
-    document.getElementById('editSchedule').value = '';
-  }
-  
-  document.getElementById('editDays').value = cells[4].textContent.trim() === '-' ? '' : cells[4].textContent.trim();
-  document.getElementById('editRoom').value = cells[5].textContent.trim() === '-' ? '' : cells[5].textContent.trim();
-  
-  // Show modal
-  new bootstrap.Modal(document.getElementById('editSubjectModal')).show();
+  // Fetch subject data from server instead of parsing table cells
+  fetch('../PHP/get_subject.php?id=' + id)
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const subject = data.subject;
+        
+        // Populate modal form with actual data
+        document.getElementById('editSubjectId').value = id;
+        document.getElementById('editSubjectCode').value = subject.subject_code || '';
+        document.getElementById('editSubjectTitle').value = subject.subject_title || '';
+        document.getElementById('editUnits').value = subject.units || '';
+        document.getElementById('editDays').value = subject.days || '';
+        document.getElementById('editRoom').value = subject.room || '';
+        
+        // Handle schedule - parse if exists
+        if (subject.schedule) {
+          // Try to parse schedule like "8:00 AM-9:00 AM"
+          const scheduleMatch = subject.schedule.match(/(\d{1,2}:\d{2})\s*(AM|PM)?\s*-\s*(\d{1,2}:\d{2})\s*(AM|PM)/i);
+          if (scheduleMatch) {
+            const [, startTime, startAmPm, endTime, endAmPm] = scheduleMatch;
+            
+            // Convert to 24-hour format for time inputs
+            const start24 = convertTo24Hour(`${startTime} ${startAmPm || endAmPm}`);
+            const end24 = convertTo24Hour(`${endTime} ${endAmPm}`);
+            
+            document.getElementById('editStartTime').value = start24;
+            document.getElementById('editEndTime').value = end24;
+          }
+          document.getElementById('editSchedule').value = subject.schedule;
+        } else {
+          document.getElementById('editStartTime').value = '';
+          document.getElementById('editEndTime').value = '';
+          document.getElementById('editSchedule').value = '';
+        }
+        
+        // Show modal
+        new bootstrap.Modal(document.getElementById('editSubjectModal')).show();
+      } else {
+        showToast('error', 'Failed to load subject data');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showToast('error', 'An error occurred while loading subject data');
+    });
 }
 
 function deleteSubject(id) {
