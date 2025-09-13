@@ -20,17 +20,17 @@
         <input type="text" class="form-control" id="subject_title" name="subject_title" required 
                placeholder="e.g., Database Management Systems" maxlength="100">
       </div>
-      <div class="col-md-4">
+      <div class="col-md-2">
         <label for="units" class="form-label">Units</label>
         <input type="number" class="form-control" id="units" name="units" 
                placeholder="3" min="1" max="10" step="1">
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <label for="schedule" class="form-label">Schedule</label>
-        <div class="d-flex gap-2 align-items-center">
-          <input type="time" class="form-control" id="start_time" name="start_time" style="flex: 1;">
-          <span class="text-muted">to</span>
-          <input type="time" class="form-control" id="end_time" name="end_time" style="flex: 1;">
+        <div class="d-flex align-items-center gap-2 schedule-row">
+          <input type="time" class="form-control schedule-time flex-shrink-0" style="max-width: 150px;" id="start_time" name="start_time">
+          <span class="text-muted flex-shrink-0">to</span>
+          <input type="time" class="form-control schedule-time flex-shrink-0" style="max-width: 150px;" id="end_time" name="end_time">
         </div>
         <input type="hidden" id="schedule" name="schedule">
       </div>
@@ -111,17 +111,17 @@
                 </td>
                 <td>
                   <i class="bi bi-pencil me-2" 
-                     onclick="editSubject(<?= $subject['id'] ?>)" 
+                     data-id="<?= $subject['id'] ?>"
                      title="Edit Subject"
                      style="cursor: pointer; font-size: 1.1rem; color: #0d6efd; transition: all 0.2s ease;"
                      onmouseover="this.style.color='#0a58ca'; this.style.transform='scale(1.1)'"
-                     onmouseout="this.style.color='#0d6efd'; this.style.transform='scale(1)'"></i>
+                     onmouseout="this.style.color='#0d6efd'; this.style.transform='scale(1)'" ></i>
                   <i class="bi bi-dash-circle" 
-                     onclick="deleteSubject(<?= $subject['id'] ?>)" 
+                     data-id="<?= $subject['id'] ?>"
                      title="Delete Subject"
                      style="cursor: pointer; font-size: 1.1rem; color: #dc3545; transition: all 0.2s ease;"
                      onmouseover="this.style.color='#b02a37'; this.style.transform='scale(1.1)'"
-                     onmouseout="this.style.color='#dc3545'; this.style.transform='scale(1)'"></i>
+                     onmouseout="this.style.color='#dc3545'; this.style.transform='scale(1)'" ></i>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -160,15 +160,16 @@
 
 <!-- Edit Subject Modal -->
 <div class="modal fade" id="editSubjectModal" tabindex="-1" aria-labelledby="editSubjectModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editSubjectModalLabel">
+  <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width:650px;">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden; padding: 0;">
+      <!-- Blue Header -->
+      <div class="modal-header border-0" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); padding: 1.5rem; margin: 0; border-radius: 16px 16px 0 0;">
+        <h5 class="modal-title text-white fw-bold mb-0" id="editSubjectModalLabel" style="font-size: 1rem; letter-spacing: 0.5px;">
           <i class="bi bi-pencil me-2"></i>Edit Subject
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      
+      <div class="modal-body" style="padding: 1.5rem;">
         <form id="editSubjectForm" class="row g-3">
           <input type="hidden" id="editSubjectId" name="id">
           <div class="col-md-6">
@@ -179,16 +180,16 @@
             <label for="editSubjectTitle" class="form-label">Subject Title <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="editSubjectTitle" name="subject_title" required maxlength="100">
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
             <label for="editUnits" class="form-label">Units</label>
             <input type="number" class="form-control" id="editUnits" name="units" min="1" max="10" step="1">
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <label for="editSchedule" class="form-label">Schedule</label>
-            <div class="d-flex gap-2 align-items-center">
-              <input type="time" class="form-control" id="editStartTime" name="start_time" style="flex: 1;">
-              <span class="text-muted">to</span>
-              <input type="time" class="form-control" id="editEndTime" name="end_time" style="flex: 1;">
+            <div class="d-flex align-items-center gap-2 schedule-row">
+              <input type="time" class="form-control schedule-time flex-shrink-0" style="max-width: 150px;" id="editStartTime" name="start_time">
+              <span class="text-muted flex-shrink-0">to</span>
+              <input type="time" class="form-control schedule-time flex-shrink-0" style="max-width: 150px;" id="editEndTime" name="end_time">
             </div>
             <input type="hidden" id="editSchedule" name="schedule">
           </div>
@@ -202,11 +203,15 @@
           </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+      
+      <div class="modal-footer border-0" style="padding: 1rem 1.5rem 1.5rem;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 0.6rem 1.2rem; border-radius: 8px;">
           Cancel
         </button>
-        <button type="button" class="btn btn-primary btn-sm" id="saveEditSubjectBtn" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+        <button type="button" class="btn text-white fw-semibold" id="saveEditSubjectBtn" 
+                style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
+                       font-size: 0.9rem; padding: 0.6rem 1.2rem; border-radius: 8px; border: none;">
+          <i class="bi bi-check-circle me-1"></i>
           Save Changes
         </button>
       </div>
@@ -223,35 +228,44 @@
 
 <!-- Delete Subject Modal -->
 <div class="modal fade" id="deleteSubjectModal" tabindex="-1" aria-labelledby="deleteSubjectModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteSubjectModalLabel">
-          <i class="bi bi-exclamation-triangle text-warning me-2"></i>Confirm Subject Deletion
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden; padding: 0;">
+      <!-- Red Header -->
+      <div class="modal-header border-0" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 1.5rem; margin: 0; border-radius: 16px 16px 0 0;">
+        <h5 class="modal-title text-white fw-bold mb-0" id="deleteSubjectModalLabel" style="font-size: 1rem; letter-spacing: 0.5px;">
+          <i class="bi bi-exclamation-triangle me-2"></i>Confirm Subject Deletion
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <p class="mb-3">Are you sure you want to delete this subject?</p>
-        <div class="alert alert-warning d-flex align-items-center" role="alert">
-          <i class="bi bi-info-circle me-2"></i>
+      
+      <div class="modal-body" style="padding: 1.5rem;">
+        <p class="mb-3" style="color: #374151; font-size: 0.95rem;">Are you sure you want to delete this subject?</p>
+        
+        <!-- Subject Info Card with Red Border -->
+        <div class="border rounded-3 p-3 mb-3" style="background-color: #fef2f2; border-color: #dc2626 !important; border-width: 2px; font-size: 0.9rem;">
           <div>
-            <strong>Subject:</strong> <span id="deleteSubjectName"></span>
+            <strong style="color: #dc2626;">Subject:</strong> 
+            <span id="deleteSubjectName" style="color: #374151;"></span>
           </div>
         </div>
-        <div class="alert alert-danger d-flex align-items-center" role="alert">
+        
+        <div class="alert alert-danger d-flex align-items-center mb-3" role="alert" style="background-color: #fef2f2; border-color: #fecaca; color: #dc2626;">
           <i class="bi bi-exclamation-triangle me-2"></i>
           <div>
             <strong>Warning:</strong> This action cannot be undone. The subject will be permanently removed from the system.
           </div>
         </div>
-        <p class="text-muted small mb-0">Note: Subjects with existing grades cannot be deleted.</p>
+        
+        <p class="text-muted small mb-0" style="font-size: 0.85rem;">Note: Subjects with existing grades cannot be deleted.</p>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+      
+      <div class="modal-footer border-0" style="padding: 1rem 1.5rem 1.5rem;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 0.6rem 1.2rem; border-radius: 8px;">
           Cancel
         </button>
-        <button type="button" class="btn btn-danger btn-sm" id="confirmDeleteSubjectBtn" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+        <button type="button" class="btn text-white fw-semibold" id="confirmDeleteSubjectBtn" 
+                style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
+                       font-size: 0.9rem; padding: 0.6rem 1.2rem; border-radius: 8px; border: none;">
+          <i class="bi bi-trash me-1"></i>
           Delete Subject
         </button>
       </div>
@@ -259,295 +273,5 @@
   </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const addSubjectForm = document.getElementById('addSubjectForm');
-  const editSubjectForm = document.getElementById('editSubjectForm');
-  const saveEditSubjectBtn = document.getElementById('saveEditSubjectBtn');
-  const confirmDeleteSubjectBtn = document.getElementById('confirmDeleteSubjectBtn');
-  
-  window.currentDeleteId = null;
-  let subjectLoadingAnimation = null;
-  
-  // Initialize Lottie loading animation for subjects
-  try {
-    if (window.lottie) {
-      subjectLoadingAnimation = window.lottie.loadAnimation({
-        container: document.getElementById('subjectLoadingAnimation'),
-        renderer: 'svg',
-        loop: true,
-        autoplay: false,
-        path: '../assets/loading.json'
-      });
-    }
-  } catch (e) {
-    console.log('Lottie animation not available');
-  }
-  
-  // Toast functions
-  function showToast(type, message) {
-    const toastId = type === 'success' ? 'successToast' : 'errorToast';
-    const messageId = type === 'success' ? 'successMessage' : 'errorMessage';
-    
-    document.getElementById(messageId).textContent = message;
-    const toast = new bootstrap.Toast(document.getElementById(toastId));
-    toast.show();
-  }
-  
-  // Function to format time to 12-hour format with AM/PM
-  function formatTime12Hour(time24) {
-    if (!time24) return '';
-    const [hours, minutes] = time24.split(':');
-    const hour12 = hours % 12 || 12;
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    return `${hour12}:${minutes} ${ampm}`;
-  }
-
-  // Function to convert 12-hour format back to 24-hour
-  function convertTo24Hour(time12) {
-    if (!time12) return '';
-    const match = time12.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-    if (!match) return time12;
-    
-    let [, hours, minutes, ampm] = match;
-    hours = parseInt(hours);
-    if (ampm.toUpperCase() === 'PM' && hours !== 12) hours += 12;
-    if (ampm.toUpperCase() === 'AM' && hours === 12) hours = 0;
-    
-    return `${hours.toString().padStart(2, '0')}:${minutes}`;
-  }
-
-  // Function to combine start and end times into schedule format
-  function combineSchedule() {
-    const startTime = document.getElementById('start_time').value;
-    const endTime = document.getElementById('end_time').value;
-    
-    if (startTime && endTime) {
-      const startFormatted = formatTime12Hour(startTime);
-      const endFormatted = formatTime12Hour(endTime);
-      const schedule = `${startFormatted}-${endFormatted}`;
-      document.getElementById('schedule').value = schedule;
-    }
-  }
-
-  // Function to combine edit schedule times
-  function combineEditSchedule() {
-    const startTime = document.getElementById('editStartTime').value;
-    const endTime = document.getElementById('editEndTime').value;
-    
-    if (startTime && endTime) {
-      const startFormatted = formatTime12Hour(startTime);
-      const endFormatted = formatTime12Hour(endTime);
-      const schedule = `${startFormatted}-${endFormatted}`;
-      document.getElementById('editSchedule').value = schedule;
-    }
-  }
-
-  // Add event listeners for time inputs
-  document.getElementById('start_time').addEventListener('change', combineSchedule);
-  document.getElementById('end_time').addEventListener('change', combineSchedule);
-  document.getElementById('editStartTime').addEventListener('change', combineEditSchedule);
-  document.getElementById('editEndTime').addEventListener('change', combineEditSchedule);
-
-  // Add Subject Form
-  if (addSubjectForm) {
-    addSubjectForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Combine schedule before submitting
-      combineSchedule();
-      
-      const formData = new FormData(this);
-      const submitBtn = this.querySelector('button[type="submit"]');
-      const loadingOverlay = document.getElementById('subjectLoadingOverlay');
-      
-      // Show loading overlay immediately
-      loadingOverlay.classList.add('show');
-      
-      // Start loading animation
-      if (subjectLoadingAnimation) {
-        subjectLoadingAnimation.play();
-      }
-      
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Adding Subject...';
-      
-      // Force exactly 3 seconds delay before processing
-      setTimeout(() => {
-        fetch('/VESTIL/PHP/manage_subject.php', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            showToast('success', 'Subject added successfully!');
-            this.reset();
-            setTimeout(() => location.reload(), 1500);
-          } else {
-            showToast('error', data.message || 'Failed to add subject');
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          showToast('error', 'An error occurred while adding the subject');
-        })
-        .finally(() => {
-          // Hide loading overlay
-          loadingOverlay.classList.remove('show');
-          if (subjectLoadingAnimation) {
-            subjectLoadingAnimation.stop();
-          }
-          
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Add Subject';
-        });
-      }, 3000); // Exactly 3 seconds delay
-    });
-  }
-  
-  // Save Edit Subject
-  if (saveEditSubjectBtn) {
-    saveEditSubjectBtn.addEventListener('click', function() {
-      // Combine edit schedule before submitting
-      combineEditSchedule();
-      
-      const formData = new FormData(editSubjectForm);
-      formData.append('action', 'edit');
-      
-      this.disabled = true;
-      this.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Saving...';
-      
-      fetch('/VESTIL/PHP/manage_subject.php', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          showToast('success', 'Subject updated successfully!');
-          bootstrap.Modal.getInstance(document.getElementById('editSubjectModal')).hide();
-          setTimeout(() => location.reload(), 1500);
-        } else {
-          showToast('error', data.message || 'Failed to update subject');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        showToast('error', 'An error occurred while updating the subject');
-      })
-      .finally(() => {
-        this.disabled = false;
-        this.innerHTML = '<i class="bi bi-check-circle me-1"></i>Save Changes';
-      });
-    });
-  }
-  
-  // Confirm Delete Subject
-  if (confirmDeleteSubjectBtn) {
-    confirmDeleteSubjectBtn.addEventListener('click', function() {
-      if (!window.currentDeleteId) return;
-      
-      this.disabled = true;
-      this.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Deleting...';
-      
-      fetch('/VESTIL/PHP/manage_subject.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'action=delete&id=' + window.currentDeleteId
-      })
-      .then(response => {
-        console.log('Delete response status:', response.status);
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Delete response data:', data);
-        if (data.success) {
-          showToast('success', 'Subject deleted successfully!');
-          bootstrap.Modal.getInstance(document.getElementById('deleteSubjectModal')).hide();
-          setTimeout(() => location.reload(), 1500);
-        } else {
-          showToast('error', data.message || 'Failed to delete subject');
-        }
-      })
-      .catch(error => {
-        console.error('Delete error:', error);
-        showToast('error', 'An error occurred while deleting the subject');
-      })
-      .finally(() => {
-        this.disabled = false;
-        this.innerHTML = 'Delete Subject';
-      });
-    });
-  }
-});
-
-function editSubject(id) {
-  // Fetch subject data from server instead of parsing table cells
-  fetch('../PHP/get_subject.php?id=' + id)
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        const subject = data.subject;
-        
-        // Populate modal form with actual data
-        document.getElementById('editSubjectId').value = id;
-        document.getElementById('editSubjectCode').value = subject.subject_code || '';
-        document.getElementById('editSubjectTitle').value = subject.subject_title || '';
-        document.getElementById('editUnits').value = subject.units || '';
-        document.getElementById('editDays').value = subject.days || '';
-        document.getElementById('editRoom').value = subject.room || '';
-        
-        // Handle schedule - parse if exists
-        if (subject.schedule) {
-          // Try to parse schedule like "8:00 AM-9:00 AM"
-          const scheduleMatch = subject.schedule.match(/(\d{1,2}:\d{2})\s*(AM|PM)?\s*-\s*(\d{1,2}:\d{2})\s*(AM|PM)/i);
-          if (scheduleMatch) {
-            const [, startTime, startAmPm, endTime, endAmPm] = scheduleMatch;
-            
-            // Convert to 24-hour format for time inputs
-            const start24 = convertTo24Hour(`${startTime} ${startAmPm || endAmPm}`);
-            const end24 = convertTo24Hour(`${endTime} ${endAmPm}`);
-            
-            document.getElementById('editStartTime').value = start24;
-            document.getElementById('editEndTime').value = end24;
-          }
-          document.getElementById('editSchedule').value = subject.schedule;
-        } else {
-          document.getElementById('editStartTime').value = '';
-          document.getElementById('editEndTime').value = '';
-          document.getElementById('editSchedule').value = '';
-        }
-        
-        // Show modal
-        new bootstrap.Modal(document.getElementById('editSubjectModal')).show();
-      } else {
-        showToast('error', 'Failed to load subject data');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      showToast('error', 'An error occurred while loading subject data');
-    });
-}
-
-function deleteSubject(id) {
-  window.currentDeleteId = id;
-  
-  // Find subject data from the table
-  const row = document.querySelector(`i[onclick="deleteSubject(${id})"]`).closest('tr');
-  const subjectCode = row.querySelector('td:first-child').textContent.trim();
-  const subjectTitle = row.querySelector('td:nth-child(2)').textContent.trim();
-  
-  // Populate modal
-  document.getElementById('deleteSubjectName').textContent = `${subjectCode} - ${subjectTitle}`;
-  
-  // Show modal
-  new bootstrap.Modal(document.getElementById('deleteSubjectModal')).show();
-}
-</script>
+<!-- subject-manager.js handles all subject logic -->
+<script src="../JAVASCRIPTS/subject-manager.js"></script>

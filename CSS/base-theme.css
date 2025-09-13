@@ -145,3 +145,43 @@ body {
 .text-muted.small {
   font-size: 0.70rem !important;
 }
+
+/* Database Status Styles */
+.status-value {
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.status-value.connected {
+  color: #059669;
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.status-value.disconnected {
+  color: #dc2626;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.status-value.checking {
+  color: #d97706;
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+/* Dark mode status styles */
+.dark-mode .status-value.connected {
+  color: #34d399;
+  background-color: rgba(52, 211, 153, 0.15);
+}
+
+.dark-mode .status-value.disconnected {
+  color: #f87171;
+  background-color: rgba(248, 113, 113, 0.15);
+}
+
+.dark-mode .status-value.checking {
+  color: #fbbf24;
+  background-color: rgba(251, 191, 36, 0.15);
+}

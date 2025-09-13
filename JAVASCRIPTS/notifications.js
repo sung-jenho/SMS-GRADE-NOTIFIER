@@ -148,6 +148,7 @@ class NotificationSystem {
           transform-origin: left;
           transition: transform 5s linear;
           border-radius: 0 0 16px 16px;
+          box-shadow: 0 0 8px ${shadowColor};
         "></div>
       </div>
     `;
@@ -159,9 +160,15 @@ class NotificationSystem {
       notification.querySelector('.notification-content').style.transform = 'translateX(0)';
     }, 10);
     
+    // Auto-close timer (5 seconds)
+    let autoCloseTimer = setTimeout(() => {
+      this.remove(notification);
+    }, 5000);
+    
     // Handle close button
     const closeBtn = notification.querySelector('.notification-close');
     closeBtn.addEventListener('click', () => {
+      clearTimeout(autoCloseTimer); // Cancel auto-close if user clicks X
       this.remove(notification);
     });
     
@@ -172,12 +179,6 @@ class NotificationSystem {
         progressBar.style.transform = 'scaleX(0)';
       }
     }, 100);
-    
-    // Auto remove after 6 seconds for success, 4 seconds for others
-    const autoRemoveDelay = type === 'success' ? 6000 : 4000;
-    setTimeout(() => {
-      this.remove(notification);
-    }, autoRemoveDelay);
   }
 
   remove(notification) {

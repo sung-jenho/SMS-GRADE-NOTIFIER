@@ -15,6 +15,18 @@ $all_subjects = get_all_subjects(); // For subjects management page
 $grades = get_grades();
 $sms_logs = get_sms_logs();
 
+// Fetch settings data for settings page
+$settings = get_settings();
+$sms_templates = get_sms_templates();
+$user_data = get_user_data($_SESSION['user_id']);
+
+// Update session with latest user data for header/sidebar display
+if ($user_data) {
+    $_SESSION['full_name'] = $user_data['full_name'];
+    $_SESSION['email'] = $user_data['email'];
+    $_SESSION['profile_picture'] = $user_data['profile_picture'];
+}
+
 // Get SMS tasks count and change percentage for overview
 $sms_tasks_count = get_sms_tasks_count();
 $sms_tasks_change = get_sms_tasks_change_percentage();

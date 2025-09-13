@@ -39,7 +39,7 @@
         <img src="<?= $sidebarAvatar ?>" alt="Profile" class="sidebar-avatar-img" />
         <div class="user-meta">
           <div class="user-name"><?= htmlspecialchars($_SESSION['full_name'] ?? 'Administrator') ?></div>
-          <div class="user-email">Prof. Greg Vestil</div>
+          <div class="user-email"><?= htmlspecialchars($_SESSION['email'] ?? 'admin@ctucc.edu.ph') ?></div>
         </div>
       </div>
     </div>

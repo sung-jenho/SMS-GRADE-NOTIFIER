@@ -3,11 +3,43 @@ require_once __DIR__ . '/db.php';
 
 function find_user_by_username(string $username): ?array {
     $mysqli = get_db_connection();
-    $stmt = $mysqli->prepare('SELECT id, username, password_hash, full_name, email FROM users WHERE username = ? LIMIT 1');
+    $stmt = $mysqli->prepare('SELECT id, username, password_hash, full_name, email, profile_picture FROM users WHERE username = ? LIMIT 1');
     if (!$stmt) {
         return null;
     }
     $stmt->bind_param('s', $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result ? $result->fetch_assoc() : null;
+    $stmt->close();
+    return $user ?: null;
+}
+
+function get_settings(): array {
+    $mysqli = get_db_connection();
+    $result = $mysqli->query('SELECT setting_key, setting_value FROM settings');
+    $settings = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $settings[$row['setting_key']] = $row['setting_value'];
+        }
+    }
+    return $settings;
+}
+
+function get_sms_templates(): array {
+    $mysqli = get_db_connection();
+    $result = $mysqli->query('SELECT * FROM sms_templates ORDER BY grade_range ASC');
+    return $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+}
+
+function get_user_data(int $user_id): ?array {
+    $mysqli = get_db_connection();
+    $stmt = $mysqli->prepare('SELECT id, username, full_name, email, profile_picture FROM users WHERE id = ? LIMIT 1');
+    if (!$stmt) {
+        return null;
+    }
+    $stmt->bind_param('i', $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result ? $result->fetch_assoc() : null;

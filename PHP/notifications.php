@@ -86,30 +86,41 @@
 <!-- Confirmation Modal for Single SMS Log Deletion -->
 <div class="modal fade" id="confirmSmsDeleteModal" tabindex="-1" aria-labelledby="confirmSmsDeleteModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="confirmSmsDeleteModalLabel" style="font-size: 0.95rem; font-weight: 600;">
-          <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+      <!-- Red Header -->
+      <div class="modal-header border-0" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 1.5rem;">
+        <h5 class="modal-title text-white fw-bold mb-0" id="confirmSmsDeleteModalLabel" style="font-size: 1rem; letter-spacing: 0.5px;">
+          <i class="bi bi-exclamation-triangle me-2"></i>
           CONFIRM SMS LOG REMOVAL
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <p class="mb-3">Are you sure you want to remove this SMS log?</p>
-        <div class="alert alert-warning d-flex align-items-center" role="alert">
-          <i class="bi bi-info-circle me-2"></i>
-          <div>
-            <strong>Student:</strong> <span id="modalSmsStudentName"></span><br>
-            <strong>Subject:</strong> <span id="modalSmsSubjectTitle"></span>
+      
+      <div class="modal-body" style="padding: 1.5rem;">
+        <p class="mb-3" style="color: #374151; font-size: 0.95rem;">Are you sure you want to remove this SMS log?</p>
+        
+        <!-- Student Info Card with Red Border -->
+        <div class="border rounded-3 p-3 mb-3" style="background-color: #fef2f2; border-color: #dc2626 !important; border-width: 2px; font-size: 0.9rem;">
+          <div class="mb-2">
+            <strong style="color: #dc2626;">Student:</strong> 
+            <span id="modalSmsStudentName" style="color: #374151;"></span>
+          </div>
+          <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            <strong style="color: #dc2626;">Subject:</strong> 
+            <span id="modalSmsSubjectTitle" style="color: #374151;"></span>
           </div>
         </div>
-        <p class="text-muted small mb-0">This action cannot be undone.</p>
+        
+        <p class="text-muted small mb-0" style="font-size: 0.85rem;">This action cannot be undone.</p>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+      
+      <div class="modal-footer border-0" style="padding: 1rem 1.5rem 1.5rem;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 0.6rem 1.2rem; border-radius: 8px;">
           Cancel
         </button>
-        <button type="button" class="btn btn-danger btn-sm" id="confirmSmsDeleteBtn" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">
+        <button type="button" class="btn text-white fw-semibold" id="confirmSmsDeleteBtn" 
+                style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
+                       font-size: 0.9rem; padding: 0.6rem 1.2rem; border-radius: 8px; border: none;">
+          <i class="bi bi-trash me-1"></i>
           Remove SMS Log
         </button>
       </div>
@@ -126,7 +137,6 @@
           <i class="bi bi-send text-success me-2"></i>
           SEND SMS NOTIFICATION
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form id="smsForm">

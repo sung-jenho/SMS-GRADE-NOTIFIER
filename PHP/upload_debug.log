@@ -1,0 +1,84 @@
+=== 2025-09-13 11:39:29 ===
+POST: Array
+(
+    [full_name] => CTUCC ADMIN TEST
+    [username] => ctucc@gmail.com
+    [email] => ctucc@gmail.com
+    [current_password] => 
+    [new_password] => 
+    [confirm_password] => 
+)
+
+FILES: Array
+(
+)
+
+
+=== 2025-09-13 11:40:48 ===
+POST: Array
+(
+    [full_name] => CTUCC ADMIN TEST
+    [username] => ctucc@gmail.com
+    [email] => ctucc@gmail.com
+    [current_password] => 
+    [new_password] => 
+    [confirm_password] => 
+)
+
+FILES: Array
+(
+)
+
+
+=== 2025-09-13 12:04:33 ===
+POST: Array
+(
+    [full_name] => CTUCC ADMIN TEST
+    [username] => ctucc@gmail.com
+    [email] => ctucc@gmail.com
+    [current_password] => 
+    [new_password] => 
+    [confirm_password] => 
+)
+
+FILES: Array
+(
+    [profile_picture] => Array
+        (
+            [name] => nami.jpg
+            [full_path] => nami.jpg
+            [type] => image/jpeg
+            [tmp_name] => C:\Users\nacil\OneDrive\Desktop\XAMPPP\tmp\php4A4E.tmp
+            [error] => 0
+            [size] => 92632
+        )
+
+)
+
+
+=== 2025-09-13 13:48:01 ===
+POST: Array
+(
+    [full_name] => CTUCC ADMIN TEST
+    [username] => ctucc@gmail.com
+    [email] => ctucc@gmail.com
+    [current_password] => 
+    [new_password] => 
+    [confirm_password] => 
+)
+
+FILES: Array
+(
+    [profile_picture] => Array
+        (
+            [name] => robin.jpg
+            [full_path] => robin.jpg
+            [type] => image/jpeg
+            [tmp_name] => C:\Users\nacil\OneDrive\Desktop\XAMPPP\tmp\php2D5.tmp
+            [error] => 0
+            [size] => 71118
+        )
+
+)
+
+

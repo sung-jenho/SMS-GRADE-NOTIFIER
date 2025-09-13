@@ -391,13 +391,13 @@
 }
 
 #editStudentModal .modal-header {
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  border-bottom: 1px solid #60a5fa;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-bottom: none;
   padding: 20px 24px;
 }
 
 #editStudentModal .modal-title {
-  color: #1e3a8a;
+  color: #ffffff;
   font-weight: 600;
   font-size: 1.05rem;
   margin: 0;
@@ -556,4 +556,61 @@
 
 .dark-mode #editStudentModal .current-photo {
   border-color: #475569;
+}
+
+/* Dark mode for Student Deletion modal */
+.dark-mode #deleteStudentModal .modal-content {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.dark-mode #deleteStudentModal .modal-header {
+  background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
+  border-bottom-color: #d97706;
+}
+
+.dark-mode #deleteStudentModal .modal-title {
+  color: #ffffff;
+}
+
+.dark-mode #deleteStudentModal .modal-body {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.dark-mode #deleteStudentModal .modal-body p {
+  color: #ffffff;
+}
+
+.dark-mode #deleteStudentModal .modal-footer {
+  background: #0f172a;
+  border-top-color: #334155;
+}
+
+.dark-mode #deleteStudentModal .btn-secondary {
+  background: #334155;
+  border-color: #475569;
+  color: #ffffff;
+}
+
+.dark-mode #deleteStudentModal .btn-secondary:hover {
+  background: #475569;
+  border-color: #64748b;
+  color: #ffffff;
+}
+
+.dark-mode #deleteStudentModal .alert-warning {
+  background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
+  border-color: #d97706;
+  color: #ffffff;
+}
+
+.dark-mode #deleteStudentModal .alert-danger {
+  background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+  border-color: #dc2626;
+  color: #ffffff;
+}
+
+.dark-mode #deleteStudentModal .text-muted {
+  color: #ffffff !important;
 }

@@ -158,7 +158,6 @@
         <h5 class="modal-title" id="editStudentModalLabel">
           <i class="bi bi-pencil-square me-2"></i>Edit Student
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form id="editStudentForm" enctype="multipart/form-data">
         <div class="modal-body">
@@ -225,34 +224,42 @@
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteStudentModalLabel">
-          <i class="bi bi-exclamation-triangle text-warning me-2"></i>Confirm Student Deletion
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden; padding: 0;">
+      <!-- Red Header -->
+      <div class="modal-header border-0" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 1.5rem; margin: 0; border-radius: 16px 16px 0 0;">
+        <h5 class="modal-title text-white fw-bold mb-0" id="deleteStudentModalLabel" style="font-size: 1rem; letter-spacing: 0.5px;">
+          <i class="bi bi-exclamation-triangle me-2"></i>Confirm Student Deletion
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <p class="mb-3">Are you sure you want to delete this student?</p>
-        <div class="alert alert-warning d-flex align-items-center" role="alert">
-          <i class="bi bi-info-circle me-2"></i>
+      
+      <div class="modal-body" style="padding: 1.5rem;">
+        <p class="mb-3" style="color: #374151; font-size: 0.95rem;">Are you sure you want to delete this student?</p>
+        
+        <!-- Student Info Card with Red Border -->
+        <div class="border rounded-3 p-3 mb-3" style="background-color: #fef2f2; border-color: #dc2626 !important; border-width: 2px; font-size: 0.9rem;">
           <div>
-            <strong>Student:</strong> <span id="deleteStudentName"></span>
+            <strong style="color: #dc2626;">Student:</strong> 
+            <span id="deleteStudentName" style="color: #374151;"></span>
           </div>
         </div>
-        <div class="alert alert-danger d-flex align-items-center" role="alert">
+        
+        <div class="alert alert-danger d-flex align-items-center mb-3" role="alert" style="background-color: #fef2f2; border-color: #fecaca; color: #dc2626;">
           <i class="bi bi-exclamation-triangle me-2"></i>
           <div>
             <strong>Warning:</strong> This action cannot be undone. The student will be permanently removed from the system.
           </div>
         </div>
-        <p class="text-muted small mb-0">Note: Students with existing grades or SMS logs cannot be deleted.</p>
+        
+        <p class="text-muted small mb-0" style="font-size: 0.85rem;">Note: Students with existing grades or SMS logs cannot be deleted.</p>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+      
+      <div class="modal-footer border-0" style="padding: 1rem 1.5rem 1.5rem;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 0.9rem; padding: 0.6rem 1.2rem; border-radius: 8px;">
           <i class="bi bi-x-circle me-1"></i>Cancel
         </button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteStudentBtn">
+        <button type="button" class="btn text-white fw-semibold" id="confirmDeleteStudentBtn" 
+                style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
+                       font-size: 0.9rem; padding: 0.6rem 1.2rem; border-radius: 8px; border: none;">
           <i class="bi bi-trash me-1"></i>Delete Student
         </button>
       </div>

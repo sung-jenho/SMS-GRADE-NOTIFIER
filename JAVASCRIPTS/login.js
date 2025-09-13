@@ -13,13 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       // Preload the loading animation
-      loadingAnimation = window.lottie.loadAnimation({
-        container: document.getElementById('loadingAnimation'),
-        renderer: 'svg',
-        loop: true,
-        autoplay: false,
-        path: '../assets/loading.json'
-      });
+      const loadingContainer = document.getElementById('loadingAnimation');
+      if (loadingContainer) {
+        loadingAnimation = window.lottie.loadAnimation({
+          container: loadingContainer,
+          renderer: 'svg',
+          loop: true,
+          autoplay: false,
+          path: '../assets/loading.json'
+        });
+      }
     }
   } catch (e) {}
 
