@@ -1,14 +1,8 @@
 <?php /** @var array $settings */ /** @var array $sms_templates */ /** @var array $user_data */ ?>
-<div class="dashboard-header d-flex align-items-center justify-content-between">
-  <div>
-    <h2 class="me-3 mb-0">Settings</h2>
-    <span class="text-secondary" style="font-size:0.9rem;">System configuration and preferences</span>
-  </div>
-</div>
 
 <!-- Settings Navigation Tabs -->
 <div class="settings-container">
-  <div class="modern-nav-container mb-4">
+  <div class="modern-nav-container mb-3">
     <nav class="modern-nav" id="settingsTabs" role="tablist">
       <button class="modern-nav-item active" id="admin-profile-tab" data-bs-toggle="pill" data-bs-target="#admin-profile" type="button" role="tab">
         <i class="bi bi-person-circle"></i>
@@ -70,7 +64,8 @@
 
 <style>
 .settings-container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: none;
 }
 
 .settings-card {

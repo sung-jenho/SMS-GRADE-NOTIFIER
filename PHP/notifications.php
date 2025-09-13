@@ -185,7 +185,6 @@
           <i class="bi bi-exclamation-triangle text-danger me-2"></i>
           CLEAR ALL SMS LOGS
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <p class="mb-3">This will remove <strong>ALL</strong> SMS logs from the system.</p>

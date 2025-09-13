@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (saveTemplatesBtn) {
         saveTemplatesBtn.addEventListener('click', function() {
             const templates = [];
-            document.querySelectorAll('.template-item').forEach(item => {
+            document.querySelectorAll('.modern-template-card').forEach(item => {
                 const templateId = item.querySelector('.message-template').dataset.templateId;
                 const messageTemplate = item.querySelector('.message-template').value;
                 const isActive = item.querySelector('.template-active').checked;
